@@ -1,0 +1,26 @@
+PODS:
+  - AmityUIKit (3.17.0):
+    - RealmSwift (= 10.42.3)
+  - Realm (10.42.3):
+    - Realm/Headers (= 10.42.3)
+  - Realm/Headers (10.42.3)
+  - RealmSwift (10.42.3):
+    - Realm (= 10.42.3)
+
+DEPENDENCIES:
+  - AmityUIKit
+
+SPEC REPOS:
+  trunk:
+    - AmityUIKit
+    - Realm
+    - RealmSwift
+
+SPEC CHECKSUMS:
+  AmityUIKit: b3698710738db1ef9445684e436a8cca6614c98f
+  Realm: ac7fa0100533e1c91511b19a58e837f9cfd80bb7
+  RealmSwift: a06d4e3c623a5f236bd9fe214f0bfdfee20312c2
+
+PODFILE CHECKSUM: b501bec9dbf731f9f3138100704ae344de3b5cfd
+
+COCOAPODS: 1.15.2

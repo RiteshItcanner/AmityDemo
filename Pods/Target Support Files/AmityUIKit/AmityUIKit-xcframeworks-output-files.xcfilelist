@@ -1,0 +1,2 @@
+${PODS_XCFRAMEWORKS_BUILD_DIR}/AmityUIKit/AmityUIKit.framework
+${PODS_XCFRAMEWORKS_BUILD_DIR}/AmityUIKit/AmitySDK.framework

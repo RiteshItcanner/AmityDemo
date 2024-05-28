@@ -1,0 +1,3652 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name AmitySDK
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import AVFoundation
+import AVKit
+@_exported import AmitySDK
+import Combine
+import CommonCrypto
+import CoreFoundation
+import Dispatch
+import Foundation
+import MobileCoreServices
+import Realm
+import RealmSwift
+import Security
+import Swift
+import SystemConfiguration
+import UIKit.UIImage
+import UIKit
+import UniformTypeIdentifiers
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import zlib
+@objc @_inheritsConvenienceInitializers public class _ASCReactionUpdateStateModel : AmitySDK._ASCSDKRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public struct AmityMessageQueryOptions {
+  public let subChannelId: Swift.String
+  public let includingTags: [Swift.String]
+  public let excludingTags: [Swift.String]
+  public let messageParentFilter: AmitySDK.AmityMessageParentFilter
+  public let type: AmitySDK.AmityMessageType?
+  public let aroundMessageId: Swift.String?
+  public let sortOption: AmitySDK.AmityMessageQuerySortOptions
+  public init(subChannelId: Swift.String, includingTags: [Swift.String] = [], excludingTags: [Swift.String] = [], messageParentFilter: AmitySDK.AmityMessageParentFilter = .noParent, type: AmitySDK.AmityMessageType? = nil, aroundMessageId: Swift.String? = nil, sortOption: AmitySDK.AmityMessageQuerySortOptions = .lastCreated)
+}
+public enum AmityMessageQuerySortOptions {
+  case firstCreated
+  case lastCreated
+  public static func == (a: AmitySDK.AmityMessageQuerySortOptions, b: AmitySDK.AmityMessageQuerySortOptions) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum AmityMessageParentFilter : Swift.Equatable {
+  case parent(id: Swift.String?)
+  case noParent
+  public static func == (a: AmitySDK.AmityMessageParentFilter, b: AmitySDK.AmityMessageParentFilter) -> Swift.Bool
+}
+public protocol AmityTopic : AnyObject {
+  func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+}
+public class AmityMentioneesBuilder {
+  public init()
+  public func mentionChannel()
+  public func mentionUsers(userIds: [Swift.String])
+  public func build() -> [[Swift.String : Any]]
+  @objc deinit
+}
+public class AmityEndpoint {
+  final public let httpUrl: Swift.String?
+  final public let rpcUrl: Swift.String?
+  final public let mqttUrl: Swift.String?
+  public init(httpUrl: Swift.String?, rpcUrl: Swift.String?, mqttHost: Swift.String?)
+  @objc deinit
+}
+public enum AmityRegion : Swift.Int, Swift.CaseIterable {
+  case global
+  case EU
+  case SG
+  case US
+  public var mqttHost: Swift.String {
+    get
+  }
+  public var rpcUrl: Swift.String {
+    get
+  }
+  public var httpUrl: Swift.String {
+    get
+  }
+  public var urlComponents: Foundation.URLComponents {
+    get
+  }
+  public var regionIdentifier: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [AmitySDK.AmityRegion]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [AmitySDK.AmityRegion] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public class AmityLiveStreamPostBuilder : AmitySDK.AmityPostBuilder {
+  public init(streamId: Swift.String, text: Swift.String?)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+public struct AmityTranscodeConfig : Swift.Codable {
+  public let minResolution: AmitySDK.AmityVideoResolution
+  public let maxResolution: AmitySDK.AmityVideoResolution
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct AmityVideoContentSettings : Swift.Codable {
+  public let allowed: Swift.Bool
+  public let maxDurationSeconds: Foundation.TimeInterval
+  public let transcodeConfig: AmitySDK.AmityTranscodeConfig
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public class AmityTopicSubscription {
+  required public init(client: AmitySDK.AmityClient)
+  public func subscribeTopic(_ topic: any AmitySDK.AmityTopic, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeTopic(_ topic: any AmitySDK.AmityTopic, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  @objc deinit
+}
+public struct AmityCommentCreateOptions {
+  public let referenceId: Swift.String
+  public let referenceType: AmitySDK.AmityCommentReferenceType
+  public let text: Swift.String
+  public let parentId: Swift.String?
+  public let metadata: [Swift.String : Any]?
+  public let mentioneeBuilder: AmitySDK.AmityMentioneesBuilder?
+  public let attachments: [AmitySDK.AmityCommentAttachment]?
+  public init(referenceId: Swift.String, referenceType: AmitySDK.AmityCommentReferenceType, text: Swift.String, attachments: [AmitySDK.AmityCommentAttachment]? = nil, parentId: Swift.String? = nil, metadata: [Swift.String : Any]? = nil, mentioneeBuilder: AmitySDK.AmityMentioneesBuilder? = nil)
+}
+public struct AmityCommentUpdateOptions {
+  public let text: Swift.String?
+  public let attachments: [AmitySDK.AmityCommentAttachment]?
+  public let metadata: [Swift.String : Any]?
+  public let mentioneesBuilder: AmitySDK.AmityMentioneesBuilder?
+  public init(text: Swift.String? = nil, attachments: [AmitySDK.AmityCommentAttachment]? = nil, metadata: [Swift.String : Any]? = nil, mentioneesBuilder: AmitySDK.AmityMentioneesBuilder? = nil)
+}
+public struct AmityCommentQueryOptions {
+  public let referenceId: Swift.String
+  public let referenceType: AmitySDK.AmityCommentReferenceType
+  public let filterByParentId: Swift.Bool
+  public let parentId: Swift.String?
+  public let orderBy: AmitySDK.AmityOrderBy
+  public let includeDeleted: Swift.Bool
+  public let dataTypes: AmitySDK.AmityCommentDataTypeFilter?
+  public init(referenceId: Swift.String, referenceType: AmitySDK.AmityCommentReferenceType, filterByParentId: Swift.Bool, dataTypes: AmitySDK.AmityCommentDataTypeFilter? = nil, parentId: Swift.String? = nil, orderBy: AmitySDK.AmityOrderBy, includeDeleted: Swift.Bool)
+}
+@_hasMissingDesignatedInitializers @available(iOS 13.0.0, *)
+public class AmityUserTokenManager {
+  convenience public init(apiKey: Swift.String, region: AmitySDK.AmityRegion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createUserToken(userId: Swift.String, displayName: Swift.String? = nil, authToken: Swift.String? = nil) async throws -> AmitySDK.AmityUserToken
+  #endif
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `AmityCommunityMembership` instead.")
+public class AmityCommunityParticipation {
+  public var client: AmitySDK.AmityClient
+  public var communityId: Swift.String
+  required public init(client: AmitySDK.AmityClient, andCommunityId communityId: Swift.String)
+  public func addMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  public func removeMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  public func getMember(withId userId: Swift.String) -> AmitySDK.AmityCommunityMember?
+  public func getMembers(membershipOptions: AmitySDK.AmityCommunityMembershipFilterOption, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCChannelRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityChannel : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCChannelRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCChannelRealmModel, client: AmitySDK.AmityClient)
+  public var channelId: Swift.String {
+    get
+  }
+  public var unreadCount: Swift.Int {
+    get
+  }
+  public var isUnreadCountSupported: Swift.Bool {
+    get
+  }
+  public var hasMentioned: Swift.Bool {
+    get
+  }
+  public var defaultSubChannelId: Swift.String {
+    get
+  }
+  public var channelType: AmitySDK.AmityChannelType {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var displayName: Swift.String? {
+    get
+  }
+  public var currentUserMembership: AmitySDK.AmityChannelMembershipType {
+    get
+  }
+  public var isDistinct: Swift.Bool {
+    get
+  }
+  public var isMuted: Swift.Bool {
+    get
+  }
+  public var isRateLimited: Swift.Bool {
+    get
+  }
+  public var rateLimit: Swift.Int {
+    get
+  }
+  @available(*, deprecated, message: "Please use `unreadCount` instead.")
+  public var defaultSubChannelUnreadCount: Swift.Int {
+    get
+  }
+  public var defaultSubChannelHasUnreadMention: Swift.Bool {
+    get
+  }
+  public var memberCount: Swift.Int {
+    get
+  }
+  @available(*, deprecated, message: "MessageCount will be deprecated in future")
+  public var messageCount: Swift.Int {
+    get
+  }
+  @available(*, deprecated, message: "Use `membership` instead.")
+  public var participation: AmitySDK.AmityChannelParticipation {
+    get
+  }
+  public var membership: AmitySDK.AmityChannelMembership {
+    get
+  }
+  public var currentMembership: AmitySDK.AmityChannelMember? {
+    get
+  }
+  public var moderate: AmitySDK.AmityChannelModeration {
+    get
+  }
+  public var tags: [Swift.String] {
+    get
+  }
+  public var lastActivity: Foundation.Date? {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var avatarFileId: Swift.String? {
+    get
+  }
+  public var moderatorCount: Swift.Int {
+    get
+  }
+  public var messagePreview: AmitySDK.AmityMessagePreview? {
+    get
+  }
+  public func getAvatarInfo() -> AmitySDK.AmityImageData?
+  public var isPublic: Swift.Bool {
+    get
+  }
+  public func subscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unSubscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func markAsRead() async throws
+  #endif
+  public typealias RealmModel = AmitySDK._ASCChannelRealmModel
+  @objc deinit
+}
+public struct AmityCommunityQueryOptions {
+  public let displayName: Swift.String?
+  public let filter: AmitySDK.AmityCommunityQueryFilter
+  public let sortBy: AmitySDK.AmityCommunitySortOption
+  public let categoryId: Swift.String?
+  public let includeDeleted: Swift.Bool
+  public init(displayName: Swift.String? = nil, filter: AmitySDK.AmityCommunityQueryFilter, sortBy: AmitySDK.AmityCommunitySortOption, categoryId: Swift.String? = nil, includeDeleted: Swift.Bool)
+}
+public class AmityTextPostBuilder : AmitySDK.AmityPostBuilder {
+  public init()
+  public func setText(_ text: Swift.String)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityCommentRepository` instead.")
+public class AmityCommentFlagger {
+  required public init(client: AmitySDK.AmityClient, commentId: Swift.String)
+  public func flag(completion: AmitySDK.AmityRequestCompletion?)
+  public func unflag(completion: AmitySDK.AmityRequestCompletion?)
+  public func isFlaggedByMe(completion: @escaping (Swift.Bool) -> Swift.Void)
+  @objc deinit
+}
+public protocol AmityModel {
+  associatedtype RealmModel : AmitySDK._ASCRealmModel
+  var model: Self.RealmModel { get set }
+  var client: AmitySDK.AmityClient { get set }
+  init(model: Self.RealmModel, client: AmitySDK.AmityClient)
+}
+@_hasMissingDesignatedInitializers public class AmityObject<ObjectType> : Foundation.ObservableObject where ObjectType : AmitySDK.AmityModel {
+  @Combine.Published @_projectedValueProperty($dataStatus) public var dataStatus: AmitySDK.AmityDataStatus {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $dataStatus: Combine.Published<AmitySDK.AmityDataStatus>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($loadingStatus) public var loadingStatus: AmitySDK.AmityLoadingStatus {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $loadingStatus: Combine.Published<AmitySDK.AmityLoadingStatus>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @available(*, deprecated, message: "Use `snapshot` property instead.")
+  public var object: ObjectType?
+  @Combine.Published @_projectedValueProperty($snapshot) public var snapshot: ObjectType? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $snapshot: Combine.Published<ObjectType?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($error) public var error: (any Swift.Error)? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $error: Combine.Published<(any Swift.Error)?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  public func observe(_ block: @escaping (AmitySDK.AmityObject<ObjectType>, (any Swift.Error)?) -> Swift.Void) -> AmitySDK.AmityNotificationToken
+  public func observeOnce(_ block: @escaping (AmitySDK.AmityObject<ObjectType>, (any Swift.Error)?) -> Swift.Void) -> AmitySDK.AmityNotificationToken
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public enum MessageDeliveredMembershipFilter : Swift.String {
+  case member
+  case banned
+  case muted
+  case nonMember
+  case deleted
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class _ASCPollRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityFollowRelationship : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCFollowRelationshipRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCFollowRelationshipRealmModel, client: AmitySDK.AmityClient)
+  public var sourceUserId: Swift.String {
+    get
+  }
+  public var targetUserId: Swift.String {
+    get
+  }
+  public var sourceUser: AmitySDK.AmityUser? {
+    get
+  }
+  public var targetUser: AmitySDK.AmityUser? {
+    get
+  }
+  public var status: AmitySDK.AmityFollowStatus {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCFollowRelationshipRealmModel
+  @objc deinit
+}
+public class AmityMention {
+  final public let type: AmitySDK.AmityMessageMentionType
+  public var index: Swift.Int
+  final public let length: Swift.Int
+  final public let userId: Swift.String?
+  required public init(type: AmitySDK.AmityMessageMentionType, index: Swift.Int, length: Swift.Int, userId: Swift.String?)
+  @objc deinit
+}
+public class AmityChannelModeration {
+  required public init(client: AmitySDK.AmityClient, andChannel channel: Swift.String)
+  @available(*, deprecated, message: "Use `muteMembers(userIds:, mutePeriodInSeconds:) async throws -> Bool` instead.")
+  public func muteMembers(_ userIds: [Swift.String], mutePeriod mutePeriodInSeconds: Swift.Int, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func muteMembers(_ userIds: [Swift.String], mutePeriod mutePeriodInSeconds: Swift.Int) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func unmuteMembers(userIds:) async throws -> Bool` instead.")
+  public func unmuteMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unmuteMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func banMembers(userIds:) async throws -> Bool` instead.")
+  public func banMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func banMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func unbanMembers(userIds:) async throws -> Bool` instead.")
+  public func unbanMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unbanMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func addRole(role:, userIds:) async throws -> Bool` instead.")
+  public func addRole(_ role: Swift.String, userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func addRole(role:, userIds:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func addRoles(_ role: Swift.String, userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addRole(_ role: Swift.String, userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func removeRole(role:, userIds:) async throws -> Bool` instead.")
+  public func removeRole(_ role: Swift.String, userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func removeRole(role:, userIds:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func removeRoles(_ role: Swift.String, userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeRole(_ role: Swift.String, userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+public class AmityUserRelationship {
+  required public init(client: AmitySDK.AmityClient)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func follow(withUserId userId: Swift.String) async throws -> (Swift.Bool, AmitySDK.AmityFollowResponse)
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unfollow(withUserId userId: Swift.String) async throws -> (Swift.Bool, AmitySDK.AmityFollowResponse)
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func acceptMyFollower(withUserId userId: Swift.String) async throws -> (Swift.Bool, AmitySDK.AmityFollowResponse)
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func declineMyFollower(withUserId userId: Swift.String) async throws -> (Swift.Bool, AmitySDK.AmityFollowResponse)
+  #endif
+  public func clearAmityFollowRelationshipLocalData()
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func blockUser(userId: Swift.String) async throws
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unblockUser(userId: Swift.String) async throws
+  #endif
+  @objc deinit
+}
+extension AmitySDK.AmityUserRelationship {
+  public func getMyFollowInfo() -> AmitySDK.AmityObject<AmitySDK.AmityMyFollowInfo>
+  public func getFollowInfo(withUserId userId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityUserFollowInfo>
+  public func getMyFollowers(with option: AmitySDK.AmityFollowQueryOption) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getMyFollowings(with option: AmitySDK.AmityFollowQueryOption) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getFollowers(withUserId userId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getFollowings(withUserId userId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+}
+@objc @_inheritsConvenienceInitializers public class _ASCUserRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityFollowTopic : AmitySDK.AmityTopic {
+  required public init(event: AmitySDK.AmityFollowEvent)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+public enum AmityStreamStatus : Swift.Int {
+  case idle
+  case live
+  case ended
+  case recorded
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public class AmityStream : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCStreamRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCStreamRealmModel, client: AmitySDK.AmityClient)
+  public var streamId: Swift.String {
+    get
+  }
+  public var title: Swift.String? {
+    get
+  }
+  public var streamDescription: Swift.String? {
+    get
+  }
+  public var status: AmitySDK.AmityStreamStatus {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var resolution: Swift.String {
+    get
+  }
+  public var meta: [Swift.String : Any] {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date? {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var thumbnail: AmitySDK.AmityImageData? {
+    get
+  }
+  public var streamerUrl: AmitySDK.AmityLiveStreamURLInfo? {
+    get
+  }
+  public func sendCustomCommand(command: Swift.String) -> [Swift.String : Any]?
+  public typealias RealmModel = AmitySDK._ASCStreamRealmModel
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityUserRelationship` instead.")
+public class AmityUserFollowManager {
+  required public init(client: AmitySDK.AmityClient)
+  public func followUser(withUserId userId: Swift.String, completion: AmitySDK.AmityFollowRequestCompletion?)
+  public func unfollowUser(withUserId userId: Swift.String, completion: AmitySDK.AmityFollowRequestCompletion?)
+  public func acceptUserRequest(withUserId userId: Swift.String, completion: AmitySDK.AmityFollowRequestCompletion?)
+  public func declineUserRequest(withUserId userId: Swift.String, completion: AmitySDK.AmityFollowRequestCompletion?)
+  public func clearAmityFollowRelationshipLocalData()
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func blockUser(userId: Swift.String) async throws
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unblockUser(userId: Swift.String) async throws
+  #endif
+  @objc deinit
+}
+extension AmitySDK.AmityUserFollowManager {
+  public func getMyFollowInfo() -> AmitySDK.AmityObject<AmitySDK.AmityMyFollowInfo>
+  public func getUserFollowInfo(withUserId userId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityUserFollowInfo>
+  public func getMyFollowerList(with option: AmitySDK.AmityFollowQueryOption) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getMyFollowingList(with option: AmitySDK.AmityFollowQueryOption) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getUserFollowerList(withUserId userId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+  public func getUserFollowingList(withUserId userId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityFollowRelationship>
+}
+@_hasMissingDesignatedInitializers public class AmityCollectionChange {
+  final public let insertions: [Swift.Int]?
+  final public let deletions: [Swift.Int]?
+  final public let modifications: [Swift.Int]?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class AmityCollection<ObjectType> : Foundation.ObservableObject where ObjectType : AmitySDK.AmityModel {
+  @Combine.Published @_projectedValueProperty($loadingStatus) final public var loadingStatus: AmitySDK.AmityLoadingStatus {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $loadingStatus: Combine.Published<AmitySDK.AmityLoadingStatus>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($dataStatus) final public var dataStatus: AmitySDK.AmityDataStatus {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $dataStatus: Combine.Published<AmitySDK.AmityDataStatus>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($snapshots) final public var snapshots: [ObjectType] {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $snapshots: Combine.Published<[ObjectType]>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($error) final public var error: (any Swift.Error)? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  final public var $error: Combine.Published<(any Swift.Error)?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  final public func observe(_ block: @escaping (AmitySDK.AmityCollection<ObjectType>, AmitySDK.AmityCollectionChange?, (any Swift.Error)?) -> Swift.Void) -> AmitySDK.AmityNotificationToken
+  final public func observeOnce(_ block: @escaping (AmitySDK.AmityCollection<ObjectType>, AmitySDK.AmityCollectionChange?, (any Swift.Error)?) -> Swift.Void) -> AmitySDK.AmityNotificationToken
+  final public func count() -> Swift.Int
+  final public func object(at index: Swift.Int) -> ObjectType?
+  final public func allObjects() -> [ObjectType]
+  final public var hasPrevious: Swift.Bool {
+    get
+  }
+  final public var hasNext: Swift.Bool {
+    get
+  }
+  final public func resetPage()
+  final public func nextPage()
+  final public func previousPage()
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+public enum AmityContentFeedType : Swift.String, Swift.Codable {
+  case post
+  case chat
+  case story
+  case clip
+  case message
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct AmityFeedSettings : Swift.Decodable {
+  public let type: AmitySDK.AmityContentFeedType
+  public var textSettings: AmitySDK.AmityTextContentSettings?
+  public var videoSettings: AmitySDK.AmityVideoContentSettings?
+  public init(from decoder: any Swift.Decoder) throws
+}
+public class AmityCommunityMember : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCCommunityUserRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCCommunityUserRealmModel, client: AmitySDK.AmityClient)
+  public var channelId: Swift.String {
+    get
+  }
+  public var communityId: Swift.String {
+    get
+  }
+  public var userId: Swift.String {
+    get
+  }
+  public var displayName: Swift.String {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var isBanned: Swift.Bool {
+    get
+  }
+  public var metadata: [Swift.String : Any] {
+    get
+  }
+  public var lastActivityDate: Foundation.Date? {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var membership: AmitySDK.AmityCommunityMembershipType {
+    get
+  }
+  public var roles: [Swift.String] {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCCommunityUserRealmModel
+  @objc deinit
+}
+public protocol AmityClientDelegate : AnyObject {
+  func didReceiveError(error: any Swift.Error)
+}
+extension AmitySDK.AmityClient {
+  public func hasPermission(_ permission: AmitySDK.AmityPermission, completion: @escaping AmitySDK.AmityPermissionCompletion)
+  public func hasPermission(_ permission: AmitySDK.AmityPermission, forChannel channelId: Swift.String, completion: @escaping AmitySDK.AmityPermissionCompletion)
+  public func hasPermission(_ permission: AmitySDK.AmityPermission, forCommunity communityId: Swift.String, completion: @escaping AmitySDK.AmityPermissionCompletion)
+}
+public class AmityReactionRepository {
+  required public init(client: AmitySDK.AmityClient)
+  public func getReactions(_ referenceId: Swift.String, referenceType type: AmitySDK.AmityReactionReferenceType, reactionName: Swift.String?) -> AmitySDK.AmityCollection<AmitySDK.AmityReaction>
+  @available(*, deprecated, message: "Use `func addReaction(reaction:, referenceId:, referenceType:) async throws -> Bool` instead.")
+  public func addReaction(_ reaction: Swift.String, referenceId contentId: Swift.String, referenceType type: AmitySDK.AmityReactionReferenceType, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addReaction(_ reaction: Swift.String, referenceId contentId: Swift.String, referenceType type: AmitySDK.AmityReactionReferenceType) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func removeReaction(reaction:, referenceId:, referenceType:) async throws -> Bool` instead.")
+  public func removeReaction(_ reaction: Swift.String, referenceId contentId: Swift.String, referenceType type: AmitySDK.AmityReactionReferenceType, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeReaction(_ reaction: Swift.String, referenceId contentId: Swift.String, referenceType type: AmitySDK.AmityReactionReferenceType) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+final public class AmityChannelUpdateBuilder {
+  final public var channelId: Swift.String
+  required public init(channelId: Swift.String)
+  final public func setDisplayName(_ displayName: Swift.String)
+  final public func setMetadata(_ metadata: [Swift.String : Any])
+  final public func setAvatar(_ avatarData: AmitySDK.AmityImageData?)
+  final public func setTags(_ tags: [Swift.String])
+  @objc deinit
+}
+extension AmitySDK.AmityClient {
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(iOS 13.0.0, *)
+  @_Concurrency.MainActor public func getContentSettings() async throws -> AmitySDK.AmityContentSettings
+  #endif
+}
+public class AmityUserUpdateBuilder {
+  public init()
+  public func setDisplayName(_ name: Swift.String?)
+  public func setUserDescription(_ description: Swift.String)
+  public func setUserMetadata(_ metadata: [Swift.String : Any]?)
+  public func setAvatarCustomUrl(_ customURL: Swift.String?)
+  public func setAvatar(_ avatar: AmitySDK.AmityImageData?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityPresenceService {
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func enable() async throws
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func disable() async throws
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isEnabled() async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func startHeartbeat() async throws
+  #endif
+  public func stopHeartbeat()
+  @objc deinit
+}
+public class AmityPostTopic : AmitySDK.AmityTopic {
+  required public init(post: AmitySDK.AmityPost, andEvent event: AmitySDK.AmityPostEvent)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+public class AmityChannelMember : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCChannelUserRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCChannelUserRealmModel, client: AmitySDK.AmityClient)
+  public var userId: Swift.String {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var membership: AmitySDK.AmityChannelMembershipType {
+    get
+  }
+  public var isBanned: Swift.Bool {
+    get
+  }
+  public var isMuted: Swift.Bool {
+    get
+  }
+  public var roles: [Swift.String] {
+    get
+  }
+  public var displayName: Swift.String? {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCChannelUserRealmModel
+  @objc deinit
+}
+@_inheritsConvenienceInitializers final public class AmityLiveChannelBuilder : AmitySDK.AmityDefaultChannelBuilder {
+  override public init()
+  @objc deinit
+}
+public class AmityCommentEditor {
+  final public let client: AmitySDK.AmityClient
+  final public let commentId: Swift.String
+  required public init(client: AmitySDK.AmityClient, commentId: Swift.String)
+  @available(*, deprecated, message: "Please use `updateComment()` method from `AmityCommentRepository` instead")
+  public func editText(_ text: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Please use `updateComment()` method from `AmityCommentRepository` instead")
+  public func editText(_ text: Swift.String, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?, completion: AmitySDK.AmityRequestCompletion?)
+  @objc deinit
+}
+public class AmityChannelTopic : AmitySDK.AmityTopic {
+  required public init(channel: AmitySDK.AmityChannel)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+public class AmityMessageTopic : AmitySDK.AmityTopic {
+  required public init(message: AmitySDK.AmityMessage)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+@frozen public enum SessionState : Swift.CustomStringConvertible {
+  case notLoggedIn
+  case establishing
+  case established
+  case tokenExpired
+  case terminated(any Swift.Error)
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol Attachment {
+  var type: Swift.String { get }
+}
+public enum AmityCommentAttachment : AmitySDK.Attachment {
+  case image(fileId: Swift.String, data: AmitySDK.AmityImageData? = nil)
+  public var type: Swift.String {
+    get
+  }
+}
+public enum AmityMessageAttachment {
+  case localURL(url: Foundation.URL)
+  case fileId(id: Swift.String)
+}
+public class AmityVideoPostBuilder : AmitySDK.AmityPostBuilder {
+  public init()
+  public func setVideos(_ videos: [AmitySDK.AmityVideoData])
+  public func setText(_ text: Swift.String)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+public enum AmityVideoTranscodingStatus : Swift.String {
+  case uploaded
+  case transcoding
+  case transcoded
+  case transcodeFailed
+  case error
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class AmityVideoData {
+  final public var fileId: Swift.String
+  final public var fileURL: Swift.String
+  final public var attributes: [Swift.String : Any]
+  final public var feedType: AmitySDK.AmityContentFeedType?
+  final public var status: AmitySDK.AmityVideoTranscodingStatus?
+  final public var videoUrls: [AmitySDK.AmityVideoResolution : Swift.String]
+  final public func getVideo(resolution: AmitySDK.AmityVideoResolution?) -> Swift.String?
+  public init()
+  public static func getStringValue(_ quality: AmitySDK.AmityVideoDataQuality) -> Swift.String
+  @objc deinit
+}
+public enum AmityVideoDataQuality : Swift.Int, Swift.CaseIterable {
+  case original
+  case high
+  case medium
+  case low
+  public func stringValue() -> Swift.String
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [AmitySDK.AmityVideoDataQuality]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [AmitySDK.AmityVideoDataQuality] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityVideoResolution : Swift.String, Swift.Codable, Swift.Comparable {
+  case original
+  case res_1080p
+  case res_720p
+  case res_480p
+  case res_360p
+  public static func == (lhs: AmitySDK.AmityVideoResolution, rhs: AmitySDK.AmityVideoResolution) -> Swift.Bool
+  public static func < (lhs: AmitySDK.AmityVideoResolution, rhs: AmitySDK.AmityVideoResolution) -> Swift.Bool
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ASCCustomCommandMethod {
+  case get
+  case post
+  case put
+  case delete
+  public static func == (a: AmitySDK.ASCCustomCommandMethod, b: AmitySDK.ASCCustomCommandMethod) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class ASCCustomCommandRequest {
+  public init(endpoint: Swift.String, params: [Swift.String : Any]?, method: AmitySDK.ASCCustomCommandMethod)
+  @objc deinit
+}
+public protocol AmityBuilder {
+  func build() -> [Swift.String : Any]
+}
+public protocol AmityPostBuilder : AmitySDK.AmityBuilder {
+  func buildForPostUpdate() -> [Swift.String : Any]
+}
+public protocol AmityChannelBuilder : AmitySDK.AmityBuilder {
+  var channelType: AmitySDK.AmityChannelType { get }
+}
+public enum AmityCommunityPostSettings : Swift.Int, Swift.CaseIterable {
+  case onlyAdminCanPost
+  case adminReviewPostRequired
+  case anyoneCanPost
+  public init?(rawValue: Swift.Int)
+  public typealias AllCases = [AmitySDK.AmityCommunityPostSettings]
+  public typealias RawValue = Swift.Int
+  public static var allCases: [AmitySDK.AmityCommunityPostSettings] {
+    get
+  }
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public class AmityCommunityDataBuilder {
+  public init()
+  public func setDisplayName(_ displayName: Swift.String)
+  public func setCommunityDescription(_ communityDescription: Swift.String)
+  public func setIsPublic(_ isPublic: Swift.Bool)
+  public func setMetadata(_ metadata: [Swift.String : Any])
+  public func setCategoryIds(_ categoryIds: [Swift.String])
+  public func setPostSettings(_ postSettings: AmitySDK.AmityCommunityPostSettings)
+  public func build() -> [Swift.String : Any]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class AmityCommunityCreateOptions : AmitySDK.AmityCommunityDataBuilder {
+  public func setUserIds(_ userIds: [Swift.String])
+  public func setAvatar(_ image: AmitySDK.AmityImageData)
+  override public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers public class AmityCommunityUpdateOptions : AmitySDK.AmityCommunityDataBuilder {
+  public func setAvatar(_ image: AmitySDK.AmityImageData?)
+  override public func setIsPublic(_ isPublic: Swift.Bool)
+  override public func setPostSettings(_ postSettings: AmitySDK.AmityCommunityPostSettings)
+  override public func build() -> [Swift.String : Any]
+  override public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCMessageRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmitySubChannel : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCSubChannelRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCSubChannelRealmModel, client: AmitySDK.AmityClient)
+  public var unreadCount: Swift.Int {
+    get
+  }
+  public var hasMentioned: Swift.Bool {
+    get
+  }
+  public var isUnreadCountSupported: Swift.Bool {
+    get
+  }
+  public var subChannelId: Swift.String {
+    get
+  }
+  public var channelId: Swift.String {
+    get
+  }
+  public var displayName: Swift.String {
+    get
+  }
+  public var channelType: AmitySDK.AmityChannelType {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var createdAt: Foundation.Date? {
+    get
+  }
+  public var updatedAt: Foundation.Date? {
+    get
+  }
+  public var editedAt: Foundation.Date? {
+    get
+  }
+  public var lastActivity: Foundation.Date? {
+    get
+  }
+  public var latestMessageId: Swift.String? {
+    get
+  }
+  public var messageCount: Swift.Int {
+    get
+  }
+  public var creatorId: Swift.String {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var messagePreview: AmitySDK.AmityMessagePreview? {
+    get
+  }
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func startReading() async throws
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func stopReading() async throws
+  #endif
+  public func subscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unSubscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  public typealias RealmModel = AmitySDK._ASCSubChannelRealmModel
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class JSONParameterEncoder {
+  open func encode<Parameters>(_ parameters: Parameters?, into request: Foundation.URLRequest) throws -> Foundation.URLRequest where Parameters : Swift.Encodable
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class URLEncodedFormParameterEncoder {
+  open func encode<Parameters>(_ parameters: Parameters?, into request: Foundation.URLRequest) throws -> Foundation.URLRequest where Parameters : Swift.Encodable
+  @objc deinit
+}
+public class AmityPost : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCPostRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCPostRealmModel, client: AmitySDK.AmityClient)
+  public var isInvalidated: Swift.Bool {
+    get
+  }
+  public var postId: Swift.String {
+    get
+  }
+  public var postedUserId: Swift.String {
+    get
+  }
+  public var sharedUserId: Swift.String {
+    get
+  }
+  public var dataType: Swift.String {
+    get
+  }
+  public var sharedCount: Swift.Int {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var editedAt: Foundation.Date {
+    get
+  }
+  public var data: [Swift.String : Any]? {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var reactionsCount: Swift.Int {
+    get
+  }
+  public var myReactions: [Swift.String] {
+    get
+  }
+  public var reactions: [Swift.String : Any]? {
+    get
+  }
+  public var postedUser: AmitySDK.AmityUser? {
+    get
+  }
+  public var sharedUser: AmitySDK.AmityUser? {
+    get
+  }
+  public var flagCount: Swift.Int {
+    get
+  }
+  public var impression: Swift.Int {
+    get
+  }
+  public var reach: Swift.Int {
+    get
+  }
+  public var analytics: AmitySDK.AmityPostAnalytics {
+    get
+  }
+  public var syncState: AmitySDK.AmitySyncState {
+    get
+  }
+  public var isEdited: Swift.Bool {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var parentPostId: Swift.String? {
+    get
+  }
+  public var commentsCount: Swift.Int {
+    get
+  }
+  public var childrenPosts: [AmitySDK.AmityPost] {
+    get
+  }
+  public var targetId: Swift.String {
+    get
+  }
+  public var targetType: Swift.String {
+    get
+  }
+  public var targetCommunity: AmitySDK.AmityCommunity? {
+    get
+  }
+  public var latestComments: [AmitySDK.AmityComment] {
+    get
+  }
+  public var mentionees: [AmitySDK.AmityMentionees]? {
+    get
+  }
+  public func getFileInfo() -> AmitySDK.AmityFileData?
+  public func getImageInfo() -> AmitySDK.AmityImageData?
+  public func getLiveStreamInfo() -> AmitySDK.AmityStream?
+  public func getFeedType() -> AmitySDK.AmityFeedType
+  public func getPollInfo() -> AmitySDK.AmityPoll?
+  public var topicPath: Swift.String {
+    get
+  }
+  public func subscribeEvent(_ event: AmitySDK.AmityPostEvent, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeEvent(_ event: AmitySDK.AmityPostEvent, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  public typealias RealmModel = AmitySDK._ASCPostRealmModel
+  @objc deinit
+}
+extension AmitySDK.AmityPost {
+  public func getVideoInfo() -> AmitySDK.AmityVideoData?
+  public func getVideoThumbnailInfo() -> AmitySDK.AmityImageData?
+  public func availableResolution() -> [AmitySDK.AmityVideoResolution]
+}
+@objc @_inheritsConvenienceInitializers public class _ASCPollAnswerRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityDefaultChannelBuilder : AmitySDK.AmityChannelBuilder {
+  public var channelType: AmitySDK.AmityChannelType
+  public init()
+  public func setDisplayName(_ displayName: Swift.String)
+  public func setMetadata(_ metadata: [Swift.String : Any])
+  public func setTags(_ tags: [Swift.String])
+  public func setUserIds(_ userIds: [Swift.String])
+  public func setAvatar(_ avatarData: AmitySDK.AmityImageData)
+  public func build() -> [Swift.String : Any]
+  @objc deinit
+}
+public protocol SessionHandler : AnyObject {
+  func sessionWillRenewAccessToken(renewal: any AmitySDK.AccessTokenRenewal)
+}
+@objc @_inheritsConvenienceInitializers public class _ASCMessagePreviewRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityMessage : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCMessageRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCMessageRealmModel, client: AmitySDK.AmityClient)
+  public var messageId: Swift.String {
+    get
+  }
+  public var readCount: Swift.Int {
+    get
+  }
+  public var deliveredCount: Swift.Int {
+    get
+  }
+  public var uniqueId: Swift.String {
+    get
+  }
+  public var channelId: Swift.String {
+    get
+  }
+  public var subChannelId: Swift.String {
+    get
+  }
+  public var userId: Swift.String {
+    get
+  }
+  public var messageType: AmitySDK.AmityMessageType {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var data: [Swift.String : Any]? {
+    get
+  }
+  public var reactions: [Swift.String : Any]? {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var isEdited: Swift.Bool {
+    get
+  }
+  public var syncState: AmitySDK.AmitySyncState {
+    get
+  }
+  public var flagCount: Swift.Int {
+    get
+  }
+  public var reactionCount: Swift.Int {
+    get
+  }
+  public var readByCount: Swift.Int {
+    get
+  }
+  public var channelSegment: Swift.Int {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var editedAt: Foundation.Date {
+    get
+  }
+  public var tags: [Swift.String] {
+    get
+  }
+  public var myReactions: [Swift.String] {
+    get
+  }
+  public var parentId: Swift.String? {
+    get
+  }
+  public var childrenNumber: Swift.Int {
+    get
+  }
+  public var fileId: Swift.String? {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var topicPath: Swift.String {
+    get
+  }
+  public var mentionees: [AmitySDK.AmityMentionees]? {
+    get
+  }
+  public func getFileInfo() -> AmitySDK.AmityFileData?
+  public func getImageInfo() -> AmitySDK.AmityImageData?
+  public func getVideoInfo() -> AmitySDK.AmityVideoData?
+  public func getVideoThumbnailInfo() -> AmitySDK.AmityImageData?
+  public func subscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeEvent(completion: @escaping AmitySDK.AmityRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func markAsDelivered() async throws
+  #endif
+  public func getReadUsers(memberships: Swift.Set<AmitySDK.MessageReadMembershipFilter>?) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  public func getDeliveredUsers(memberships: Swift.Set<AmitySDK.MessageDeliveredMembershipFilter>?) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  public typealias RealmModel = AmitySDK._ASCMessageRealmModel
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCPostRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityPoll : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCPollRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCPollRealmModel, client: AmitySDK.AmityClient)
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var closedAt: Foundation.Date? {
+    get
+  }
+  public var pollId: Swift.String {
+    get
+  }
+  public var question: Swift.String {
+    get
+  }
+  public var status: Swift.String {
+    get
+  }
+  public var isClosed: Swift.Bool {
+    get
+  }
+  public var isMultipleVote: Swift.Bool {
+    get
+  }
+  public var isVoted: Swift.Bool {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var closedIn: Swift.Int {
+    get
+  }
+  public var answers: [AmitySDK.AmityPollAnswer] {
+    get
+  }
+  public var voteCount: Swift.Int {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCPollRealmModel
+  @objc deinit
+}
+public struct AmityTextContentSettings : Swift.Codable {
+  public let allowed: Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_inheritsConvenienceInitializers public class _ASCCommunityRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityCommentRepository {
+  final public let client: AmitySDK.AmityClient
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func softDeleteComment(commentId:) async throws -> Bool or func hardDeleteComment(commentId:) async throws -> Bool` instead.")
+  public func deleteComment(withId commentId: Swift.String, hardDelete: Swift.Bool, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func softDeleteComment(withId commentId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func hardDeleteComment(withId commentId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func createComment(options:) async throws -> AmityComment` instead.")
+  public func createComment(with options: AmitySDK.AmityCommentCreateOptions, completion: @escaping AmitySDK.AmityCommentRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createComment(with options: AmitySDK.AmityCommentCreateOptions) async throws -> AmitySDK.AmityComment
+  #endif
+  @available(*, deprecated, message: "Use `func editComment(commentId:, options:) async throws -> AmityComment` instead.")
+  public func updateComment(withId commentId: Swift.String, options: AmitySDK.AmityCommentUpdateOptions, completion: @escaping AmitySDK.AmityCommentRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func editComment(commentId:, options:) async throws -> AmityComment` instead.")
+  @_Concurrency.MainActor public func updateComment(withId commentId: Swift.String, options: AmitySDK.AmityCommentUpdateOptions) async throws -> AmitySDK.AmityComment
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editComment(withId commentId: Swift.String, options: AmitySDK.AmityCommentUpdateOptions) async throws -> AmitySDK.AmityComment
+  #endif
+  @available(*, deprecated, message: "Use `func getLatestComment(referenceId:, referenceType:, includeReplies:) async throws -> AmityComment` instead.")
+  public func getLatestComment(withReferenceId referenceId: Swift.String, referenceType: AmitySDK.AmityCommentReferenceType, includeReplies: Swift.Bool) -> AmitySDK.AmityObject<AmitySDK.AmityComment>
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getLatestComment(withReferenceId referenceId: Swift.String, referenceType: AmitySDK.AmityCommentReferenceType, includeReplies: Swift.Bool) async throws -> AmitySDK.AmityComment
+  #endif
+  public func getComments(with options: AmitySDK.AmityCommentQueryOptions) -> AmitySDK.AmityCollection<AmitySDK.AmityComment>
+  public func getComment(withId commentId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityComment>
+  public func getReactions(_ commentId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityReaction>
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func flagComment(withId commentId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unflagComment(withId commentId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isCommentFlaggedByMe(withId commentId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+public class AmityPollPostBuilder : AmitySDK.AmityPostBuilder {
+  public init()
+  public func setText(_ text: Swift.String)
+  public func setPollId(_ pollId: Swift.String)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+public enum AmityReactionReferenceType : Swift.Int {
+  case message
+  case post
+  case comment
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public class AmityReaction : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCReactionRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCReactionRealmModel, client: AmitySDK.AmityClient)
+  public var reactionId: Swift.String {
+    get
+  }
+  public var referenceId: Swift.String {
+    get
+  }
+  public var reactionName: Swift.String {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var referenceType: AmitySDK.AmityReactionReferenceType {
+    get
+  }
+  @available(*, deprecated, message: "Use `userId` from creator object.")
+  public var reactorId: Swift.String {
+    get
+  }
+  @available(*, deprecated, message: "Use `displayName` from creator object.")
+  public var reactorDisplayName: Swift.String {
+    get
+  }
+  public var creator: AmitySDK.AmityUser? {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCReactionRealmModel
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityUserNotificationSettings {
+  final public let isEnabled: Swift.Bool
+  final public let modules: [AmitySDK.AmityUserNotificationModule]
+  @objc deinit
+}
+public enum AmityPollAnswerType : Swift.String {
+  case single
+  case multiple
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public class AmityPollCreateOptions {
+  public init()
+  public func setQuestion(_ text: Swift.String)
+  public func setAnswerType(_ answerType: AmitySDK.AmityPollAnswerType)
+  public func setTimeToClosePoll(_ millisecond: Swift.Int)
+  public func setAnswer(_ text: Swift.String)
+  public func build() -> [Swift.String : Any]
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCSubChannelRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias AmityCommunityNotificationCompletion = (AmitySDK.AmityCommunityNotificationSettings?, (any Swift.Error)?) -> Swift.Void
+public class AmityCommunityNotificationsManager {
+  required public init(client: AmitySDK.AmityClient, communityId: Swift.String)
+  public func enable(for events: [AmitySDK.AmityCommunityNotificationEvent]?, completion: AmitySDK.AmityRequestCompletion?)
+  public func disable(completion: AmitySDK.AmityRequestCompletion?)
+  public func getSettingsWithCompletion(_ completion: AmitySDK.AmityCommunityNotificationCompletion?)
+  @objc deinit
+}
+public class AmityUserTopic : AmitySDK.AmityTopic {
+  required public init(user: AmitySDK.AmityUser, andEvent event: AmitySDK.AmityUserEvent)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityPostAnalytics {
+  public func markAsViewed()
+  @objc deinit
+}
+public enum AmityLiveVideoRecordingFileFormat : Swift.Int {
+  case MP4
+  case FLV
+  case M3U8
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class AmityLiveVideoRecordingData {
+  public func url(for format: AmitySDK.AmityLiveVideoRecordingFileFormat) -> Foundation.URL?
+  @objc deinit
+}
+public class AmityCommunityTopic : AmitySDK.AmityTopic {
+  required public init(community: AmitySDK.AmityCommunity, andEvent event: AmitySDK.AmityCommunityEvent)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCFileRealmModel : AmitySDK._ASCRealmModel {
+  public func mapToFileData() -> AmitySDK.AmityFileData
+  public func mapToImageData() -> AmitySDK.AmityImageData
+  public func mapToVideoData() -> AmitySDK.AmityVideoData
+  public func extractAttributes() -> [Swift.String : Any]
+  public func extractVideoUrls() -> [AmitySDK.AmityVideoResolution : Swift.String]
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityCommunity : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCCommunityRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCCommunityRealmModel, client: AmitySDK.AmityClient)
+  public var communityId: Swift.String {
+    get
+  }
+  public var channelId: Swift.String {
+    get
+  }
+  public var userId: Swift.String {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var displayName: Swift.String {
+    get
+  }
+  public var communityDescription: Swift.String {
+    get
+  }
+  public var postsCount: Swift.Int {
+    get
+  }
+  public var membersCount: Swift.Int {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var tags: [Swift.String]? {
+    get
+  }
+  public var isOfficial: Swift.Bool {
+    get
+  }
+  public var isPublic: Swift.Bool {
+    get
+  }
+  public var isJoined: Swift.Bool {
+    get
+  }
+  public var onlyAdminCanPost: Swift.Bool {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var moderate: AmitySDK.AmityCommunityModeration {
+    get
+  }
+  public var avatar: AmitySDK.AmityImageData? {
+    get
+  }
+  public var categoryIds: [Swift.String] {
+    get
+  }
+  public var categories: [AmitySDK.AmityCommunityCategory] {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Use `membership` instead.")
+  public var participation: AmitySDK.AmityCommunityParticipation {
+    get
+  }
+  public var membership: AmitySDK.AmityCommunityMembership {
+    get
+  }
+  public var isPostReviewEnabled: Swift.Bool {
+    get
+  }
+  public func getPostCount(feedType: AmitySDK.AmityFeedType) -> Swift.Int
+  public var topicPath: Swift.String {
+    get
+  }
+  public func subscribeEvent(_ event: AmitySDK.AmityCommunityEvent, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeEvent(_ event: AmitySDK.AmityCommunityEvent, withCompletion completion: @escaping AmitySDK.AmityRequestCompletion)
+  public typealias RealmModel = AmitySDK._ASCCommunityRealmModel
+  @objc deinit
+}
+extension AmitySDK.AmityCommunity {
+  public var postSettings: AmitySDK.AmityCommunityPostSettings {
+    get
+  }
+}
+public class AmityFileRepository {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func uploadImage(image:, progress:) async throws -> AmityImageData` instead.")
+  public func uploadImage(_ image: UIKit.UIImage, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityImageUploadCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func uploadImage(_ image: UIKit.UIImage, progress: AmitySDK.AmityUploadProgressHandler?) async throws -> AmitySDK.AmityImageData
+  #endif
+  public func uploadImage(with url: Foundation.URL, isFullImage: Swift.Bool, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityImageUploadCompletion)
+  @available(*, deprecated, message: "Use `func uploadFile(file:, progress:) async throws -> AmityFileData` instead.")
+  public func uploadFile(_ file: AmitySDK.AmityUploadableFile, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityFileUploadCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func uploadFile(_ file: AmitySDK.AmityUploadableFile, progress: AmitySDK.AmityUploadProgressHandler?) async throws -> AmitySDK.AmityFileData
+  #endif
+  @available(*, deprecated, message: "Use `func uploadFile(url:, fileName:, progress:) async throws -> AmityFileData` instead.")
+  public func uploadFile(with url: Foundation.URL, fileName: Swift.String?, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityFileUploadCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func uploadFile(with url: Foundation.URL, fileName: Swift.String?, progress: AmitySDK.AmityUploadProgressHandler?) async throws -> AmitySDK.AmityFileData
+  #endif
+  @available(*, deprecated, message: "Use `func uploadVideo(with:, progress:) async throws -> AmityVideoData` instead.")
+  public func uploadVideo(with url: Foundation.URL, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityVideoUploadCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func uploadVideo(with url: Foundation.URL, progress: AmitySDK.AmityUploadProgressHandler?) async throws -> AmitySDK.AmityVideoData
+  #endif
+  public func uploadVideo(with url: Foundation.URL, feedType: AmitySDK.AmityContentFeedType, progress: AmitySDK.AmityUploadProgressHandler?, completion: @escaping AmitySDK.AmityVideoUploadCompletion)
+  public func downloadImageAsData(fromURL url: Swift.String, size: AmitySDK.AmityMediaSize, completion: @escaping (UIKit.UIImage?, AmitySDK.AmityMediaSize, (any Swift.Error)?) -> Swift.Void)
+  public func downloadImage(fromURL url: Swift.String, size: AmitySDK.AmityMediaSize, completion: @escaping (Foundation.URL?, (any Swift.Error)?) -> Swift.Void)
+  public func downloadFileAsData(fromURL url: Swift.String, completion: @escaping (Foundation.Data?, (any Swift.Error)?) -> Swift.Void)
+  @available(*, deprecated, message: "Use `func downloadFile(fromURL:) async throws -> URL` instead.")
+  public func downloadFile(fromURL url: Swift.String, completion: @escaping (Foundation.URL?, (any Swift.Error)?) -> Swift.Void)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func downloadFile(fromURL url: Swift.String) async throws -> Foundation.URL
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func deleteFile(fileId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getFile(fileId: Swift.String) async throws -> AmitySDK.AmityRawFile
+  #endif
+  public func getUploadProgress(forUploadId id: Swift.String, progress: @escaping AmitySDK.AmityUploadProgressHandler)
+  public func cancelFileDownload(_ url: Swift.String)
+  public func cancelImageDownload(_ url: Swift.String, size: AmitySDK.AmityMediaSize)
+  @objc deinit
+}
+public class AmityComment : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCCommentRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCCommentRealmModel, client: AmitySDK.AmityClient)
+  public var isInvalidated: Swift.Bool {
+    get
+  }
+  public var commentId: Swift.String {
+    get
+  }
+  public var parentId: Swift.String? {
+    get
+  }
+  public var referenceId: Swift.String {
+    get
+  }
+  public var userId: Swift.String {
+    get
+  }
+  public var referenceType: AmitySDK.AmityCommentReferenceType {
+    get
+  }
+  @available(*, deprecated, message: "dataType has been deprecated. Use dataTypes instead.")
+  public var dataType: AmitySDK.AmityDataType {
+    get
+  }
+  public var dataTypes: Swift.Set<AmitySDK.AmityCommentDataType> {
+    get
+  }
+  public var attachments: [AmitySDK.AmityCommentAttachment] {
+    get
+  }
+  public var data: [Swift.String : Any]? {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var reactions: [Swift.String : Any]? {
+    get
+  }
+  public var myReactions: [Swift.String] {
+    get
+  }
+  public var flagCount: Swift.Int {
+    get
+  }
+  public var childrenNumber: Swift.Int {
+    get
+  }
+  public var childrenComments: [AmitySDK.AmityComment] {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var reactionsCount: Swift.Int {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var editedAt: Foundation.Date {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var isEdited: Swift.Bool {
+    get
+  }
+  public var target: AmitySDK.AmityCommentTarget {
+    get
+  }
+  public var syncState: AmitySDK.AmitySyncState {
+    get
+  }
+  public var topicPath: Swift.String {
+    get
+  }
+  public func subscribeEvent(_ event: AmitySDK.AmityCommentEvent, completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeEvent(_ event: AmitySDK.AmityCommentEvent, completion: @escaping AmitySDK.AmityRequestCompletion)
+  public var mentionees: [AmitySDK.AmityMentionees]? {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCCommentRealmModel
+  @objc deinit
+}
+public class AmityChannelMembershipFilterBuilder {
+  public init()
+  public func add(filter: AmitySDK.AmityChannelMembershipSearchFilter)
+  public func getStringValueForFilter(_ filter: AmitySDK.AmityChannelMembershipSearchFilter) -> Swift.String
+  public func getFilterForString(_ value: Swift.String) -> AmitySDK.AmityChannelMembershipSearchFilter
+  public func getAllFilters() -> [Swift.String]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityMentionConfigurations {
+  public var isMentionAllEnabled: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+public typealias AmityCommunityRequestCompletion = (AmitySDK.AmityCommunity?, (any Swift.Error)?) -> Swift.Void
+public class AmityCommunityRepository {
+  final public let client: AmitySDK.AmityClient
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func createCommunity(with:) async throws -> AmityCommunity` instead.")
+  public func createCommunity(with options: AmitySDK.AmityCommunityCreateOptions, completion: @escaping AmitySDK.AmityCommunityRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createCommunity(with options: AmitySDK.AmityCommunityCreateOptions) async throws -> AmitySDK.AmityCommunity
+  #endif
+  @available(*, deprecated, message: "Use `func editCommunity(id:, options:) async throws -> AmityCommunity` instead.")
+  public func updateCommunity(withId id: Swift.String, options: AmitySDK.AmityCommunityUpdateOptions, completion: @escaping AmitySDK.AmityCommunityRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func editCommunity(id:, options:) async throws -> AmityCommunity` instead.")
+  @_Concurrency.MainActor public func updateCommunity(withId id: Swift.String, options: AmitySDK.AmityCommunityUpdateOptions) async throws -> AmitySDK.AmityCommunity
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editCommunity(withId id: Swift.String, options: AmitySDK.AmityCommunityUpdateOptions) async throws -> AmitySDK.AmityCommunity
+  #endif
+  public func deleteCommunity(withId communityId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func joinCommunity(withId:) async throws -> Bool` instead.")
+  public func joinCommunity(withId communityId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func joinCommunity(withId communityId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func leaveCommunity(withId:) async throws -> Bool` instead.")
+  public func leaveCommunity(withId communityId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func leaveCommunity(withId communityId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+extension AmitySDK.AmityCommunityRepository {
+  public func notificationManager(forCommunityId communityId: Swift.String) -> AmitySDK.AmityCommunityNotificationsManager
+  public func getCommunity(withId communityId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityCommunity>
+  public func getCommunities(with options: AmitySDK.AmityCommunityQueryOptions) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunity>
+  public func getTrendingCommunities() -> AmitySDK.AmityCollection<AmitySDK.AmityCommunity>
+  public func getRecommendedCommunities() -> AmitySDK.AmityCollection<AmitySDK.AmityCommunity>
+  public func getCategories(sortBy: AmitySDK.AmityCommunityCategoriesSortOption, includeDeleted includeDeletedCategories: Swift.Bool) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityCategory>
+  public func getCategory(withId categoryId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityCommunityCategory>
+  @available(*, deprecated, message: "Use searchMembers with keyword instead.")
+  public func searchMembers(communityId: Swift.String, displayName: Swift.String, membership membershipOptions: AmitySDK.AmityCommunityMembershipFilterOption, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  @available(*, deprecated, message: "Use api in `AmityCommunityMembership` instead.")
+  public func searchMembers(communityId: Swift.String, keyword: Swift.String, membership membershipOptions: AmitySDK.AmityCommunityMembershipFilterOption, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+}
+@objc @_inheritsConvenienceInitializers public class _ASCCommunityCategoryRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public struct AmityTextMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  public var text: Swift.String
+  public var metadata: [Swift.String : Any]?
+  public var mentioneesBuilder: AmitySDK.AmityMentioneesBuilder?
+  public init(subChannelId: Swift.String, text: Swift.String, tags: [Swift.String]? = nil, parentId: Swift.String? = nil, metadata: [Swift.String : Any]? = nil, mentioneesBuilder: AmitySDK.AmityMentioneesBuilder? = nil)
+}
+public struct AmityImageMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  @available(*, deprecated, message: "This property will be removed in the future. Use `attachment` property instead.")
+  public var imageURL: Foundation.URL?
+  public var attachment: AmitySDK.AmityMessageAttachment
+  public var caption: Swift.String?
+  public var fullImage: Swift.Bool
+  public var metadata: [Swift.String : Any]?
+  @available(*, deprecated, message: "Use initializer with attachment instead. This initializer will be removed in the future")
+  public init(subChannelId: Swift.String, imageURL: Foundation.URL, caption: Swift.String? = nil, fullImage: Swift.Bool, tags: [Swift.String]? = nil, parentId: Swift.String? = nil)
+  public init(subChannelId: Swift.String, attachment: AmitySDK.AmityMessageAttachment, caption: Swift.String? = nil, fullImage: Swift.Bool = true, tags: [Swift.String]? = nil, metadata: [Swift.String : Any]? = nil, parentId: Swift.String? = nil)
+}
+public struct AmityFileMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  @available(*, deprecated, message: "This property will be removed in the future. Use `attachment` property instead.")
+  public var fileURL: Foundation.URL?
+  public var attachment: AmitySDK.AmityMessageAttachment
+  public var caption: Swift.String?
+  public var fileName: Swift.String?
+  public var metadata: [Swift.String : Any]?
+  @available(*, deprecated, message: "Use initializer with attachment instead. This initializer will be removed in the future")
+  public init(subChannelId: Swift.String, fileURL: Foundation.URL, fileName: Swift.String? = nil, caption: Swift.String? = nil, tags: [Swift.String]? = nil, parentId: Swift.String? = nil)
+  public init(subChannelId: Swift.String, attachment: AmitySDK.AmityMessageAttachment, fileName: Swift.String? = nil, caption: Swift.String? = nil, tags: [Swift.String]? = nil, metadata: [Swift.String : Any]? = nil, parentId: Swift.String? = nil)
+}
+public struct AmityAudioMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  @available(*, deprecated, message: "This property will be removed in the future. Use `attachment` property instead.")
+  public var audioFileURL: Foundation.URL?
+  public var attachment: AmitySDK.AmityMessageAttachment
+  public var fileName: Swift.String?
+  public var metadata: [Swift.String : Any]?
+  @available(*, deprecated, message: "Use initializer with attachment instead. This initializer will be removed in the future")
+  public init(subChannelId: Swift.String, audioFileURL: Foundation.URL, fileName: Swift.String? = nil, tags: [Swift.String]? = nil, parentId: Swift.String? = nil)
+  public init(subChannelId: Swift.String, attachment: AmitySDK.AmityMessageAttachment, fileName: Swift.String? = nil, tags: [Swift.String]? = nil, metadata: [Swift.String : Any]? = nil, parentId: Swift.String? = nil)
+}
+public struct AmityVideoMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  @available(*, deprecated, message: "This property will be removed in the future. Use `attachment` property instead.")
+  public var videoFileURL: Foundation.URL?
+  public var attachment: AmitySDK.AmityMessageAttachment
+  public var fileName: Swift.String?
+  public var metadata: [Swift.String : Any]?
+  @available(*, deprecated, message: "Use initializer with attachment instead. This initializer will be removed in the future")
+  public init(subChannelId: Swift.String, videoFileURL: Foundation.URL, fileName: Swift.String? = nil, tags: [Swift.String]? = nil, parentId: Swift.String? = nil)
+  public init(subChannelId: Swift.String, attachment: AmitySDK.AmityMessageAttachment, fileName: Swift.String? = nil, tags: [Swift.String]? = nil, metadata: [Swift.String : Any]? = nil, parentId: Swift.String? = nil)
+}
+public struct AmityCustomMessageCreateOptions {
+  public var subChannelId: Swift.String
+  public var tags: [Swift.String]?
+  public var parentId: Swift.String?
+  public var data: [Swift.String : Any]
+  public var metadata: [Swift.String : Any]?
+  public init(subChannelId: Swift.String, data: [Swift.String : Any], tags: [Swift.String]? = nil, metadata: [Swift.String : Any]? = nil, parentId: Swift.String? = nil)
+}
+@_hasMissingDesignatedInitializers public class AmityMentionees {
+  final public let type: AmitySDK.AmityMessageMentionType
+  final public let users: [AmitySDK.AmityUser]?
+  @objc deinit
+}
+public class AmitySubChannelTopic : AmitySDK.AmityTopic {
+  required public init(subChannel: AmitySDK.AmitySubChannel)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+public class AmityUserPresenceRepository {
+  public static let defaultViewId: Swift.String
+  public init(client: AmitySDK.AmityClient)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getOnlineUsersCount() async throws -> Swift.Int
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getOnlineUsersSnapshot() async throws -> AmitySDK.OnlineUsersSnapshot
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getUserPresence(userIds: [Swift.String]) async throws -> [AmitySDK.AmityUserPresence]
+  #endif
+  public func syncUserPresence(id: Swift.String, viewId: Swift.String = AmityUserPresenceRepository.defaultViewId)
+  public func unsyncUserPresence(id: Swift.String, viewId: Swift.String = AmityUserPresenceRepository.defaultViewId)
+  public func unsyncAllUserPresence()
+  public func getSyncingUserPresence() -> Combine.AnyPublisher<[AmitySDK.AmityUserPresence], any Swift.Error>
+  @objc deinit
+}
+@_inheritsConvenienceInitializers final public class AmityConversationChannelBuilder : AmitySDK.AmityDefaultChannelBuilder {
+  override public init()
+  final public func setUserId(_ userId: Swift.String)
+  final public func setIsDistinct(_ isDistinct: Swift.Bool)
+  override final public func build() -> [Swift.String : Any]
+  @objc deinit
+}
+public class AmityUserRepository {
+  final public let client: AmitySDK.AmityClient
+  @available(*, deprecated, message: "Use `userRelationship` instead.")
+  final public let followManager: AmitySDK.AmityUserFollowManager
+  final public let userRelationship: AmitySDK.AmityUserRelationship
+  required public init(client: AmitySDK.AmityClient)
+  public func getUser(_ userId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityUser>
+  @available(*, deprecated, message: "Use `func searchUsers(displayName:, sortBy:) -> AmityCollection<AmityUser>` instead.")
+  public func searchUser(_ displayName: Swift.String, sortBy: AmitySDK.AmityUserSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  public func searchUsers(_ displayName: Swift.String, sortBy: AmitySDK.AmityUserSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  public func getUsers(_ sortBy: AmitySDK.AmityUserSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  public func getBlockedUsers() -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func flagUser(withId userId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unflagUser(withId userId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isUserFlaggedByMe(withId userId: Swift.String) async throws -> Swift.Bool
+  #endif
+  public func getViewedUsers(postId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityUser>
+  @objc deinit
+}
+public class AmityUserFollowInfo : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCFollowInfoRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCFollowInfoRealmModel, client: AmitySDK.AmityClient)
+  public var targetUserId: Swift.String {
+    get
+  }
+  public var status: AmitySDK.AmityFollowStatus {
+    get
+  }
+  public var followersCount: Swift.Int {
+    get
+  }
+  public var followingCount: Swift.Int {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCFollowInfoRealmModel
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityChannelMembership` instead.")
+public class AmityChannelParticipation {
+  final public let client: AmitySDK.AmityClient
+  final public let channelId: Swift.String
+  required public init(client: AmitySDK.AmityClient, andChannel channel: Swift.String)
+  @available(*, deprecated, message: "Use `func addMembers(userIds:) async throws -> Bool` instead.")
+  public func addMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func removeMembers(userIds:) async throws -> Bool` instead.")
+  public func removeMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Please use `startReading()` in `AmitySubChannel` instead")
+  public func startReading(subChannelId: Swift.String)
+  @available(*, deprecated, message: "Please use `stopReading()` in `AmitySubChannel` instead")
+  public func stopReading(subChannelId: Swift.String)
+  @available(*, deprecated, message: "This method will be removed in next breaking change")
+  public static func isReadingChannel(subChannelId: Swift.String) -> Swift.Bool
+  public func getMembers(filter: AmitySDK.AmityChannelMembershipFilter, sortBy: AmitySDK.AmitySortBy, roles: [Swift.String]) -> AmitySDK.AmityCollection<AmitySDK.AmityChannelMember>
+  public func searchMembers(displayName: Swift.String, filterBuilder: AmitySDK.AmityChannelMembershipFilterBuilder, roles: [Swift.String]) -> AmitySDK.AmityCollection<AmitySDK.AmityChannelMember>
+  @objc deinit
+}
+public typealias AmityUserNotificationCompletion = (AmitySDK.AmityUserNotificationSettings?, (any Swift.Error)?) -> Swift.Void
+public class AmityUserNotificationsManager {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func enable(for:) async throws -> Bool` instead.")
+  public func enable(for modules: [AmitySDK.AmityUserNotificationModule]?, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func enable(for modules: [AmitySDK.AmityUserNotificationModule]?) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func disableAllNotifications() async throws -> Bool` instead.")
+  public func disable(completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func disableAllNotifications() async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func getSettings() async throws -> AmityUserNotificationSettings` instead.")
+  public func getSettingsWithCompletion(_ completion: AmitySDK.AmityUserNotificationCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func getSettings() async throws -> AmitySDK.AmityUserNotificationSettings
+  #endif
+  @objc deinit
+}
+public class AmityMessagePreview : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCMessagePreviewRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCMessagePreviewRealmModel, client: AmitySDK.AmityClient)
+  public var messagePreviewId: Swift.String {
+    get
+  }
+  public var data: [Swift.String : Any]? {
+    get
+  }
+  public var dataType: AmitySDK.AmityMessageType {
+    get
+  }
+  public var channelId: Swift.String {
+    get
+  }
+  public var subChannelId: Swift.String {
+    get
+  }
+  public var subChannelName: Swift.String {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public var segment: Swift.Int {
+    get
+  }
+  public var user: AmitySDK.AmityUser? {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var subChannelUpdatedAt: Foundation.Date? {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCMessagePreviewRealmModel
+  @objc deinit
+}
+public class AmityMessageEditor {
+  required public init(client: AmitySDK.AmityClient, messageId: Swift.String)
+  @available(*, deprecated, message: "Use `func editTextMessage(messageId:, text:, metadata:, mentionees:) async throws -> Bool` in AmityMessageRepository instead.")
+  public func editText(_ text: Swift.String, metadata: [Swift.String : Any]? = nil, mentionees: AmitySDK.AmityMentioneesBuilder? = nil, completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func editCustomMessage(messageId:, customMessage:) async throws -> Bool` in AmityMessageRepository instead.")
+  public func editCustomMessage(_ customMessage: [Swift.String : Any], completion: AmitySDK.AmityRequestCompletion?)
+  public func setTags(_ tags: [Swift.String]?, completion: AmitySDK.AmityRequestCompletion?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityChannelQueryType {
+  public static let standard: Swift.String
+  public static let `private`: Swift.String
+  public static let broadcast: Swift.String
+  public static let conversation: Swift.String
+  public static let live: Swift.String
+  public static let community: Swift.String
+  @objc deinit
+}
+public class AmityChannelQuery {
+  public init()
+  public var types: Swift.Set<Swift.String>
+  public var filter: AmitySDK.AmityChannelQueryFilter
+  public var includingTags: [Swift.String]
+  public var excludingTags: [Swift.String]
+  public var includeDeleted: Swift.Bool
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityCommunityNotificationSettings {
+  final public let isEnabled: Swift.Bool
+  final public let isUserEnabled: Swift.Bool
+  final public let events: [AmitySDK.AmityCommunityNotificationEvent]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityLiveStreamURLInfo {
+  public var url: Foundation.URL?
+  public var origin: Swift.String
+  public var appName: Swift.String
+  public var streamName: Swift.String
+  public var query: Swift.String
+  public class func make(fromWatcherUrlInfo rtmpInfo: [Swift.String : Any]) -> AmitySDK.AmityLiveStreamURLInfo
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCAttachmentRealmModel : AmitySDK._ASCSDKRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@available(iOS 13.0.0, *)
+public struct AmityUserToken {
+  public let accessToken: Swift.String
+  public let issuedAt: Foundation.Date
+  public let expiresAt: Foundation.Date
+}
+@objc @_inheritsConvenienceInitializers public class _ASCFollowRelationshipRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCFollowInfoRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityCommunityCategory : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCCommunityCategoryRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCCommunityCategoryRealmModel, client: AmitySDK.AmityClient)
+  public var categoryId: Swift.String {
+    get
+  }
+  public var name: Swift.String {
+    get
+  }
+  public var avatarFileId: Swift.String {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var avatar: AmitySDK.AmityImageData? {
+    get
+  }
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCCommunityCategoryRealmModel
+  @objc deinit
+}
+public struct AmityContentSettings : Swift.Decodable {
+  public var post: AmitySDK.AmityFeedSettings?
+  public var message: AmitySDK.AmityFeedSettings?
+  public init(from decoder: any Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers final public class AmityNotificationToken {
+  final public func invalidate()
+  @objc deinit
+}
+public struct UserUnread {
+  public var unreadCount: Swift.Int
+  public var hasMentioned: Swift.Bool
+}
+public class AmityPollAnswer : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCPollAnswerRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCPollAnswerRealmModel, client: AmitySDK.AmityClient)
+  public var answerId: Swift.String {
+    get
+  }
+  public var dataType: Swift.String {
+    get
+  }
+  public var text: Swift.String {
+    get
+  }
+  public var isVotedByUser: Swift.Bool {
+    get
+  }
+  public var voteCount: Swift.Int {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCPollAnswerRealmModel
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityClient : Foundation.ObservableObject {
+  @Combine.Published @_projectedValueProperty($sessionState) public var sessionState: AmitySDK.SessionState {
+    get
+  }
+  public var $sessionState: Combine.Published<AmitySDK.SessionState>.Publisher {
+    get
+  }
+  weak public var delegate: (any AmitySDK.AmityClientDelegate)?
+  public var currentUserId: Swift.String? {
+    get
+  }
+  public var presence: AmitySDK.AmityPresenceService {
+    get
+    set
+  }
+  @available(*, deprecated, message: "Observe via getUserUnread() instead.")
+  @Combine.Published @_projectedValueProperty($totalUnreadCount) public var totalUnreadCount: Swift.Int {
+    get
+  }
+  public var $totalUnreadCount: Combine.Published<Swift.Int>.Publisher {
+    get
+  }
+  public func getUserUnread() -> Combine.AnyPublisher<AmitySDK.UserUnread, Swift.Never>
+  @available(*, deprecated, message: "Use `user` instead.")
+  public var currentUser: AmitySDK.AmityObject<AmitySDK.AmityUser>? {
+    get
+  }
+  public var user: AmitySDK.AmityObject<AmitySDK.AmityUser>? {
+    get
+  }
+  public var notificationManager: AmitySDK.AmityUserNotificationsManager {
+    get
+    set
+  }
+  public var mentionConfigurations: AmitySDK.AmityMentionConfigurations? {
+    get
+  }
+  convenience public init(apiKey: Swift.String, region: AmitySDK.AmityRegion = .global) throws
+  convenience public init(apiKey: Swift.String, endpoint: AmitySDK.AmityEndpoint) throws
+  @available(*, deprecated, message: "Use startUnreadSync() instead.")
+  public func startUnreadCountSync()
+  @available(*, deprecated, message: "Use stopUnreadSync() instead.")
+  public func stopUnreadCountSync()
+  public func startUnreadSync()
+  public func stopUnreadSync()
+  @objc deinit
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func login(userId: Swift.String, displayName: Swift.String?, authToken: Swift.String?, sessionHandler: any AmitySDK.SessionHandler) async throws
+  #endif
+  public func disconnect()
+  public func logout()
+  @available(*, deprecated, message: "Use `func registerPushNotification(token:) async throws -> Bool` instead.")
+  public func registerDeviceForPushNotification(withDeviceToken token: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func registerPushNotification(token:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func registerDeviceForPushNotification(withDeviceToken token: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func registerPushNotification(withDeviceToken token: Swift.String) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func unregisterPushNotification(userId:) async throws -> Bool` instead.")
+  public func unregisterDeviceForPushNotification(forUserId userId: Swift.String?, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func unregisterPushNotification(userId:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func unregisterDeviceForPushNotification(forUserId userId: Swift.String?) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unregisterPushNotification(forUserId userId: Swift.String?) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func editUser(builder:) async throws -> Bool` instead.")
+  public func updateUser(_ builder: AmitySDK.AmityUserUpdateBuilder, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func editUser(builder:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func updateUser(_ builder: AmitySDK.AmityUserUpdateBuilder) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editUser(_ builder: AmitySDK.AmityUserUpdateBuilder) async throws -> Swift.Bool
+  #endif
+  public func sendCustomCommandRequest(command: Swift.String, request: AmitySDK.ASCCustomCommandRequest, completion: @escaping (([Swift.String : Any]?, (any Swift.Error)?) -> ()))
+  public func sendCustomCommand(command: Swift.String) -> [Swift.String : Any]?
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+}
+public typealias AmityPermissionCompletion = (Swift.Bool) -> Swift.Void
+public typealias AmityFileUploadCompletion = (AmitySDK.AmityFileData?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityImageUploadCompletion = (AmitySDK.AmityImageData?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityVideoUploadCompletion = (AmitySDK.AmityVideoData?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityUploadProgressHandler = (Swift.Double) -> Swift.Void
+public typealias AmityDownloadProgressHandler = (Swift.Double) -> Swift.Void
+public typealias AmityFollowRequestCompletion = (Swift.Bool, AmitySDK.AmityFollowResponse?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityUserFollowInfoRequestCompletion = (Swift.Bool, AmitySDK.AmityUserFollowInfo?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityMyFollowInfoRequestCompletion = (Swift.Bool, AmitySDK.AmityMyFollowInfo?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityPostRequestCompletion = (AmitySDK.AmityPost?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityMessageCreateCompletion = (AmitySDK.AmityMessage?, (any Swift.Error)?) -> Swift.Void
+public typealias AmityRequestCompletion = (Swift.Bool, (any Swift.Error)?) -> Swift.Void
+public typealias AmityCommentRequestCompletion = (AmitySDK.AmityComment?, (any Swift.Error)?) -> Swift.Void
+@_hasMissingDesignatedInitializers final public class AmityFileData {
+  final public var fileId: Swift.String
+  final public var fileURL: Swift.String
+  final public var attributes: [Swift.String : Any]
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityPostRepository` instead.")
+public class AmityPostFlagger {
+  required public init(client: AmitySDK.AmityClient, postId: Swift.String)
+  public func flagPost(completion: AmitySDK.AmityRequestCompletion?)
+  public func unflagPost(completion: AmitySDK.AmityRequestCompletion?)
+  public func isPostFlaggedByMe(completion: @escaping (Swift.Bool) -> Swift.Void)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityFollowResponse {
+  final public let sourceUserId: Swift.String
+  final public let targetUserId: Swift.String
+  public var status: AmitySDK.AmityFollowStatus
+  public func statusFromString(str: Swift.String) -> AmitySDK.AmityFollowStatus
+  @objc deinit
+}
+public class AmityChannelMembership {
+  final public let client: AmitySDK.AmityClient
+  final public let channelId: Swift.String
+  required public init(client: AmitySDK.AmityClient, andChannel channel: Swift.String)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  public func getMembers(filter: AmitySDK.AmityChannelMembershipFilter, sortBy: AmitySDK.AmitySortBy, roles: [Swift.String]) -> AmitySDK.AmityCollection<AmitySDK.AmityChannelMember>
+  public func searchMembers(displayName: Swift.String, filterBuilder: AmitySDK.AmityChannelMembershipFilterBuilder, roles: [Swift.String]) -> AmitySDK.AmityCollection<AmitySDK.AmityChannelMember>
+  @objc deinit
+}
+public class AmityPostQueryOptions {
+  final public let targetType: AmitySDK.AmityPostTargetType
+  final public let targetId: Swift.String
+  final public let sortBy: AmitySDK.AmityPostQuerySortOption
+  final public let deletedOption: AmitySDK.AmityQueryOption
+  final public let filterPostTypes: Swift.Set<Swift.String>?
+  public init(targetType: AmitySDK.AmityPostTargetType, targetId: Swift.String, sortBy: AmitySDK.AmityPostQuerySortOption, deletedOption: AmitySDK.AmityQueryOption, filterPostTypes: Swift.Set<Swift.String>?)
+  @objc deinit
+}
+public protocol AccessTokenRenewal : AnyObject {
+  func renew()
+  func renewWithAuthToken(authToken: Swift.String)
+  func unableToRetrieveAuthToken()
+}
+@_hasMissingDesignatedInitializers public class AmityChannelPresence {
+  final public let channelId: Swift.String
+  final public let userPresences: [AmitySDK.AmityUserPresence]
+  public var isAnyMemberOnline: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCStreamRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityChannelPresenceRepository {
+  public static let defaultViewId: Swift.String
+  public init(client: AmitySDK.AmityClient)
+  public func syncChannelPresence(id: Swift.String, viewId: Swift.String = AmityChannelPresenceRepository.defaultViewId)
+  public func unsyncChannelPresence(id: Swift.String, viewId: Swift.String = AmityChannelPresenceRepository.defaultViewId)
+  public func unsyncAllChannelPresence()
+  public func getSyncingChannelPresence() -> Combine.AnyPublisher<[AmitySDK.AmityChannelPresence], any Swift.Error>
+  @objc deinit
+}
+public class AmityRawFile : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCFileRealmModel
+  public var client: AmitySDK.AmityClient
+  public var fileId: Swift.String {
+    get
+  }
+  public var type: AmitySDK.AmityFileType {
+    get
+  }
+  required public init(model: AmitySDK._ASCFileRealmModel, client: AmitySDK.AmityClient)
+  public func mapToFileData() -> AmitySDK.AmityFileData?
+  public func mapToImageData() -> AmitySDK.AmityImageData?
+  public func mapToVideoData() -> AmitySDK.AmityVideoData?
+  public typealias RealmModel = AmitySDK._ASCFileRealmModel
+  @objc deinit
+}
+public typealias AmityPollRequestCompletion = (Swift.String?, (any Swift.Error)?) -> Swift.Void
+public class AmityPollRepository {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func createPoll(options:) async throws -> String` instead.")
+  public func createPoll(_ options: AmitySDK.AmityPollCreateOptions, completion: AmitySDK.AmityPollRequestCompletion?)
+  @available(*, deprecated, message: "Use `func closePoll(pollId:) async throws -> Bool` instead.")
+  public func closePoll(withId pollId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func votePoll(pollId:, answerIds:) async throws -> Bool` instead.")
+  public func votePoll(withId pollId: Swift.String, answerIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func deletePoll(pollId:) async throws -> Bool` instead.")
+  public func deletePoll(withId pollId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createPoll(_ options: AmitySDK.AmityPollCreateOptions) async throws -> Swift.String
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func closePoll(withId pollId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func votePoll(withId pollId: Swift.String, answerIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func deletePoll(withId pollId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityUserPresence {
+  final public let userId: Swift.String
+  final public let lastHeartbeat: Foundation.Date?
+  public var isOnline: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Swift.Error {
+  public func isAmityErrorCode(_ code: AmitySDK.AmityErrorCode) -> Swift.Bool
+  public var isTerminationErrorCode: Swift.Bool {
+    get
+  }
+}
+public class AmityFilePostBuilder : AmitySDK.AmityPostBuilder {
+  public init()
+  public func setFiles(_ files: [AmitySDK.AmityFileData])
+  public func setText(_ text: Swift.String)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityCommunityNotificationEvent {
+  final public let eventName: Swift.String
+  final public let eventType: AmitySDK.AmityCommunityNotificationEventType
+  final public let isNetworkEnabled: Swift.Bool
+  final public let isEnabled: Swift.Bool
+  final public let roleFilter: AmitySDK.AmityRoleFilter?
+  public init(eventType: AmitySDK.AmityCommunityNotificationEventType, isEnabled: Swift.Bool, roleFilter: AmitySDK.AmityRoleFilter?)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCReactionRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmitySubChannelRepository {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func createSubChannel(subChannelName:, channelId:) async throws -> AmitySubChannel` instead.")
+  public func createSubChannel(withName subChannelName: Swift.String, inChannel channelId: Swift.String, completion: @escaping (AmitySDK.AmitySubChannel?, (any Swift.Error)?) -> Swift.Void)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createSubChannel(withName subChannelName: Swift.String, inChannel channelId: Swift.String) async throws -> AmitySDK.AmitySubChannel
+  #endif
+  @available(*, deprecated, message: "Use `func editSubChannel(subchannelId:, updatedName:) async throws -> AmitySubChannel` instead.")
+  public func updateSubChannel(withId subchannelId: Swift.String, updatedName: Swift.String, completion: @escaping (AmitySDK.AmitySubChannel?, (any Swift.Error)?) -> Swift.Void)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func editSubChannel(subchannelId:, updatedName:) async throws -> AmitySubChannel` instead.")
+  @_Concurrency.MainActor public func updateSubChannel(withId subchannelId: Swift.String, updatedName: Swift.String) async throws -> AmitySDK.AmitySubChannel
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editSubChannel(withId subchannelId: Swift.String, updatedName: Swift.String) async throws -> AmitySDK.AmitySubChannel
+  #endif
+  @available(*, deprecated, message: "Use `func softDeleteSubChannel(subChannelId:) async throws -> Bool` or `func hardDeleteSubChannel(subChannelId:) async throws -> Bool` instead.")
+  public func deleteSubChannel(withId subChannelId: Swift.String, hardDelete: Swift.Bool, completion: @escaping AmitySDK.AmityRequestCompletion)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func softDeleteSubChannel(withId subChannelId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func hardDeleteSubChannel(withId subChannelId: Swift.String) async throws -> Swift.Bool
+  #endif
+  public func getSubChannel(withId subchannelId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmitySubChannel>
+  public func getSubChannels(options: AmitySDK.AmitySubChannelQueryOptions) -> AmitySDK.AmityCollection<AmitySDK.AmitySubChannel>
+  @objc deinit
+}
+public struct AmitySubChannelQueryOptions {
+  public let channelId: Swift.String
+  public var isDeleted: Swift.Bool
+  public var excludeDefaultSubChannel: Swift.Bool
+  public init(channelId: Swift.String)
+}
+public class AmityStreamCollectionQuery {
+  public init()
+  public func includeStatus(_ status: AmitySDK.AmityStreamStatus)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCFeedRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityUploadableFile {
+  public var identifier: Swift.String
+  public var fileData: Foundation.Data
+  public var fileName: Swift.String?
+  public var mimeType: Swift.String
+  public var metaData: [Swift.String : Any]
+  public init(fileData: Foundation.Data, fileName: Swift.String?)
+  @objc deinit
+}
+public class AmityChannelRepository {
+  final public let client: AmitySDK.AmityClient
+  @available(*, deprecated, message: "Please use `getUserUnread()` in `AmityClient` instead.")
+  @Combine.Published @_projectedValueProperty($totalDefaultSubChannelUnreadCount) public var totalDefaultSubChannelUnreadCount: Swift.Int {
+    get
+  }
+  public var $totalDefaultSubChannelUnreadCount: Combine.Published<Swift.Int>.Publisher {
+    get
+  }
+  required public init(client: AmitySDK.AmityClient)
+  public func notificationManagerForChannel(withId channelId: Swift.String) -> AmitySDK.AmityChannelNotificationsManager
+  public func getChannel(_ channelId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityChannel>
+  public func getChannels(with query: AmitySDK.AmityChannelQuery) -> AmitySDK.AmityCollection<AmitySDK.AmityChannel>
+  @objc deinit
+}
+extension AmitySDK.AmityChannelRepository {
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func joinChannel(channelId: Swift.String) async throws -> AmitySDK.AmityChannel
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createChannel(with builder: any AmitySDK.AmityChannelBuilder) async throws -> AmitySDK.AmityChannel
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `editChannel(builder:) async throws -> AmityChannel` instead.")
+  @_Concurrency.MainActor public func updateChannel(with builder: AmitySDK.AmityChannelUpdateBuilder) async throws -> AmitySDK.AmityChannel
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editChannel(with builder: AmitySDK.AmityChannelUpdateBuilder) async throws -> AmitySDK.AmityChannel
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func leaveChannel(channelId: Swift.String) async throws
+  #endif
+}
+public enum MessageReadMembershipFilter : Swift.String {
+  case member
+  case banned
+  case muted
+  case nonMember
+  case deleted
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class AmityImageData {
+  final public var fileId: Swift.String
+  final public var fileURL: Swift.String
+  final public var attributes: [Swift.String : Any]
+  final public var metadata: [Swift.String : Any] {
+    get
+  }
+  public init()
+  @objc deinit
+}
+public class AmityCommunityModeration {
+  final public let client: AmitySDK.AmityClient
+  final public let communityId: Swift.String
+  required public init(client: AmitySDK.AmityClient, andCommunity communityId: Swift.String)
+  @available(*, deprecated, message: "Use `func banMembers(userIds:) async throws -> Bool` instead.")
+  public func banMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func banMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func unbanMembers(userIds:) async throws -> Bool` instead.")
+  public func unbanMembers(_ userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unbanMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func addRoles(roles:, userIds:) async throws -> Bool` instead.")
+  public func addRoles(_ roles: [Swift.String], userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addRoles(_ roles: [Swift.String], userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func removeRoles(roles:, userIds:) async throws -> Bool` instead.")
+  public func removeRoles(_ roles: [Swift.String], userIds: [Swift.String], completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeRoles(_ roles: [Swift.String], userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+public class AmityStreamRepository {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func createStream(title:, description:, thumbnailImage:, meta:) async throws -> AmityStream` instead.")
+  public func createVideoStream(withTitle title: Swift.String, description: Swift.String?, thumbnailImage: AmitySDK.AmityImageData?, meta: [Swift.String : Any]?, completion: @escaping (AmitySDK.AmityStream?, (any Swift.Error)?) -> Swift.Void)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createStream(withTitle title: Swift.String, description: Swift.String?, thumbnailImage: AmitySDK.AmityImageData?, meta: [Swift.String : Any]?) async throws -> AmitySDK.AmityStream
+  #endif
+  public func disposeStream(withId streamId: Swift.String, completion: @escaping (AmitySDK.AmityStream?, (any Swift.Error)?) -> Swift.Void)
+  @available(*, deprecated, message: "Use `func getStream(streamId:) -> AmityObject<AmityStream>` instead.")
+  public func getStreamById(_ streamId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityStream>
+  public func getStream(_ streamId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityStream>
+  @available(*, deprecated, message: "Use `func getStreams(query:) -> AmityCollection<AmityStream>` instead.")
+  public func getStreamsCollection(from query: AmitySDK.AmityStreamCollectionQuery) -> AmitySDK.AmityCollection<AmitySDK.AmityStream>
+  public func getStreams(from query: AmitySDK.AmityStreamCollectionQuery) -> AmitySDK.AmityCollection<AmitySDK.AmityStream>
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class OnlineUsersSnapshot {
+  public var users: [AmitySDK.AmityUser]
+  public var canLoadMore: Swift.Bool
+  public var fetchedAt: Foundation.Date?
+  #if compiler(>=5.3) && $AsyncAwait
+  public func loadMore() async
+  #endif
+  @objc deinit
+}
+public class AmityCommunityMembership {
+  public var client: AmitySDK.AmityClient
+  public var communityId: Swift.String
+  required public init(client: AmitySDK.AmityClient, andCommunityId communityId: Swift.String)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func addMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func removeMembers(_ userIds: [Swift.String]) async throws -> Swift.Bool
+  #endif
+  public func getMember(withId userId: Swift.String) -> AmitySDK.AmityCommunityMember?
+  @available(*, deprecated, message: "Use `getMembers(filter: AmityCommunityQueryMembershipFilterOption, roles: [String], sortBy: AmityCommunityMembership.QueryFilter)` instead.")
+  public func getMembers(membershipOptions: AmitySDK.AmityCommunityMembershipFilterOption, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  public func getMembers(filter: AmitySDK.AmityCommunityMembership.QueryFilter, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  @available(*, deprecated, message: "Use `searchMembers(keyword: String, filter: [AmityCommunityMembership.SearchFilter], roles: [String])` instead.")
+  public func searchMembers(keyword: Swift.String, membership membershipOptions: AmitySDK.AmityCommunityMembershipFilterOption, roles: [Swift.String], sortBy: AmitySDK.AmityCommunityMembershipSortOption) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  public func searchMembers(keyword: Swift.String, filter: [AmitySDK.AmityCommunityMembership.SearchFilter], roles: [Swift.String]) -> AmitySDK.AmityCollection<AmitySDK.AmityCommunityMember>
+  @objc deinit
+}
+extension AmitySDK.AmityCommunityMembership {
+  public enum SearchFilter {
+    case member
+    case banned
+    public static func == (a: AmitySDK.AmityCommunityMembership.SearchFilter, b: AmitySDK.AmityCommunityMembership.SearchFilter) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum QueryFilter {
+    case member
+    case banned
+    case all
+    public static func == (a: AmitySDK.AmityCommunityMembership.QueryFilter, b: AmitySDK.AmityCommunityMembership.QueryFilter) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+public enum AmityLogLevel : Swift.Int {
+  case debug
+  case warn
+  case error
+  case all
+  case none
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class AmityLog {
+  public static var logLevel: AmitySDK.AmityLogLevel
+  @objc deinit
+}
+public class AmityMyFollowInfo : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCFollowInfoRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCFollowInfoRealmModel, client: AmitySDK.AmityClient)
+  public var followersCount: Swift.Int {
+    get
+  }
+  public var followingCount: Swift.Int {
+    get
+  }
+  public var pendingCount: Swift.Int {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCFollowInfoRealmModel
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCChannelUserRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityChannelNotificationSettings {
+  public var isEnabled: Swift.Bool
+  @objc deinit
+}
+public class AmityFeedRepository {
+  final public let client: AmitySDK.AmityClient
+  required public init(client: AmitySDK.AmityClient)
+  public func getMyFeedSorted(by sortBy: AmitySDK.AmityPostQuerySortOption, includeDeleted includeDeletedPosts: Swift.Bool) -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  public func getUserFeed(_ userId: Swift.String, sortBy: AmitySDK.AmityPostQuerySortOption, includeDeleted includeDeletedPosts: Swift.Bool) -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  public func getGlobalFeed() -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  @available(*, deprecated, message: "Use `func getCustomRankingGlobalFeed() -> AmityCollection<AmityPost>` instead.")
+  public func getCustomPostRankingGlobalfeed() -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  public func getCustomRankingGlobalFeed() -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  public func getCommunityFeed(withCommunityId communityId: Swift.String, sortBy: AmitySDK.AmityPostQuerySortOption, includeDeleted includeDeletedPosts: Swift.Bool, feedType: AmitySDK.AmityFeedType) -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityUserRepository` instead.")
+public class AmityUserFlagger {
+  public init(client: AmitySDK.AmityClient, userId: Swift.String)
+  public func flag(completion: AmitySDK.AmityRequestCompletion?)
+  public func unflag(completion: AmitySDK.AmityRequestCompletion?)
+  public func isFlaggedByMe(completion: @escaping (Swift.Bool) -> Swift.Void)
+  @objc deinit
+}
+public class AmityImagePostBuilder : AmitySDK.AmityPostBuilder {
+  public init()
+  public func setImages(_ images: [AmitySDK.AmityImageData])
+  public func setText(_ text: Swift.String)
+  public func build() -> [Swift.String : Any]
+  public func buildForPostUpdate() -> [Swift.String : Any]
+  @objc deinit
+}
+@available(*, deprecated, message: "Use `APIs in AmityMessageRepository` instead.")
+public class AmityMessageFlagger {
+  required public init(client: AmitySDK.AmityClient, messageId: Swift.String)
+  public func flag(completion: AmitySDK.AmityRequestCompletion?)
+  public func unflag(completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func isMessageFlaggedByMe() async throws -> Bool` instead.")
+  public func isFlaggedByMe(completion: @escaping (Swift.Bool) -> Swift.Void)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isMessageFlaggedByMe() async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+public class AmityCommentTopic : AmitySDK.AmityTopic {
+  required public init(comment: AmitySDK.AmityComment, andEvent event: AmitySDK.AmityCommentEvent)
+  public func getSubscriptionTopic(_ client: AmitySDK.AmityClient) -> Swift.String
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCRealmModel : AmitySDK._ASCSDKRealmModel {
+  @objc override dynamic public class func shouldIncludeInDefaultSchema() -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCCommunityUserRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityUserNotificationModule {
+  final public let moduleType: AmitySDK.AmityNotificationModuleType
+  final public let isEnabled: Swift.Bool
+  final public let roleFilter: AmitySDK.AmityRoleFilter?
+  public init(moduleType: AmitySDK.AmityNotificationModuleType, isEnabled: Swift.Bool, roleFilter: AmitySDK.AmityRoleFilter?)
+  @objc deinit
+}
+public class AmityUser : AmitySDK.AmityModel {
+  public var model: AmitySDK._ASCUserRealmModel
+  public var client: AmitySDK.AmityClient
+  required public init(model: AmitySDK._ASCUserRealmModel, client: AmitySDK.AmityClient)
+  public var userId: Swift.String {
+    get
+  }
+  public var displayName: Swift.String? {
+    get
+  }
+  public var createdAt: Foundation.Date {
+    get
+  }
+  public var updatedAt: Foundation.Date {
+    get
+  }
+  public var flagCount: Swift.Int {
+    get
+  }
+  public var roles: [Swift.String] {
+    get
+  }
+  public var isGlobalBanned: Swift.Bool {
+    get
+  }
+  public var metadata: [Swift.String : Any]? {
+    get
+  }
+  public var avatarFileId: Swift.String? {
+    get
+  }
+  public var avatarCustomUrl: Swift.String? {
+    get
+  }
+  public var userDescription: Swift.String {
+    get
+  }
+  public var lastHeartbeat: Foundation.Date? {
+    get
+  }
+  public func getAvatarInfo() -> AmitySDK.AmityImageData?
+  public func subscribeEvent(_ event: AmitySDK.AmityUserEvent, completion: @escaping AmitySDK.AmityRequestCompletion)
+  public func unsubscribeEvent(_ event: AmitySDK.AmityUserEvent, completion: @escaping AmitySDK.AmityRequestCompletion)
+  public var isDeleted: Swift.Bool {
+    get
+  }
+  public typealias RealmModel = AmitySDK._ASCUserRealmModel
+  @objc deinit
+}
+public enum AmityChannelQueryFilter : Swift.Int {
+  case all
+  case userIsMember
+  case userIsNotMember
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityLoadingStatus : Swift.Int {
+  case notLoading
+  case loading
+  case loaded
+  case error
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityDataStatus : Swift.Int {
+  case notExist
+  case local
+  case fresh
+  case error
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityErrorCode : Swift.Int {
+  case business
+  case badRequest
+  case unuspportedFileType
+  case unauthorized
+  case itemNotFound
+  case forbiddenError
+  case permissionDenied
+  case userIsMuted
+  case channelIsMuted
+  case userIsBanned
+  case numberOfMemberExceed
+  case exemptFromBan
+  case maxRepetitionExceed
+  case banWordFound
+  case linkNotAllowed
+  case tooManyMember
+  case rateLimit
+  case globalBan
+  case conflict
+  case moderatorUnableToLeaveCommunity
+  case memberUnableToLeaveCommunity
+  case notificationDisabled
+  case unknown
+  case invalidParameter
+  case malformedData
+  case queryInProgress
+  case connectionError
+  case uploadFailed
+  case unsupported
+  case sessionNotLoggedIn
+  case sessionEstablishing
+  case sessionTokenExpired
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityChannelMembershipType : Swift.Int {
+  case none
+  case member
+  case banned
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityMembershipType : Swift.Int {
+  case none
+  case member
+  case banned
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityReferenceType : Swift.Int {
+  case message
+  case post
+  case comment
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityDataType : Swift.Int {
+  case text
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityUserSortOption : Swift.Int {
+  case displayName
+  case firstCreated
+  case lastCreated
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityPostQuerySortOption : Swift.Int {
+  case lastCreated
+  case firstCreated
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmitySyncState : Swift.Int {
+  case synced
+  case syncing
+  case error
+  case `default`
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityQueryFilter : Swift.Int {
+  case all
+  case userIsMember
+  case userIsNotMember
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunitySortOption : Swift.Int {
+  case lastCreated
+  case firstCreated
+  case displayName
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityMembershipSortOption : Swift.Int {
+  case lastCreated
+  case firstCreated
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityMembershipFilter : Swift.Int {
+  case all
+  case ban
+  case member
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityCategoriesSortOption : Swift.Int {
+  case lastCreated
+  case firstCreated
+  case displayName
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommentReferenceType : Swift.Int {
+  case post
+  case content
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityPostTargetType : Swift.Int {
+  case user
+  case community
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommentTarget {
+  case community(communityId: Swift.String, creatorMember: AmitySDK.AmityCommunityMember?)
+  case user(userId: Swift.String)
+  case content(contentId: Swift.String)
+  case unknown
+  public func getStringValue() -> Swift.String
+}
+public enum AmityQueryOption : Swift.Int {
+  case deleted
+  case notDeleted
+  case all
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmitySortBy : Swift.Int {
+  case firstCreated
+  case lastCreated
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityOrderBy : Swift.Int {
+  case ascending
+  case descending
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@available(*, deprecated, message: "SDK does not use this enum, and it will be deleted in the future.")
+public enum AmityCommunityType : Swift.Int {
+  case normal
+  case trending
+  case recommended
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityPermission : Swift.Int {
+  case muteChannel
+  case closeChannel
+  case editChannel
+  case editChannelRateLimit
+  case editMessage
+  case deleteMessage
+  case banChannelUser
+  case muteChannelUser
+  case addChannelUser
+  case removeChannelUser
+  case editChannelUser
+  case banUser
+  case editUser
+  case assignUserRole
+  case editUserFeedPost
+  case deleteUserFeedPost
+  case editUserFeedComment
+  case deleteUserFeedComment
+  case addCommunityUser
+  case removeCommunityUser
+  case editCommunityUser
+  case banCommunityUser
+  case muteCommunityUser
+  case editCommunity
+  case deleteCommunity
+  case editCommunityPost
+  case deleteCommunityPost
+  case pinCommunityPost
+  case editCommunityComment
+  case deleteCommunityComment
+  case reviewCommunityPost
+  case createCommunityPost
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityChannelMembershipFilter : Swift.Int {
+  case all
+  case mute
+  case ban
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityChannelMembershipSearchFilter : Swift.Int {
+  case member
+  case mute
+  case ban
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFeedType : Swift.Int {
+  case published
+  case reviewing
+  case declined
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityMessageMentionType : Swift.Int {
+  case user
+  case channel
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityEvent : Swift.Int {
+  case community
+  case posts
+  case comments
+  case postsAndComments
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityPostEvent : Swift.Int {
+  case post
+  case comments
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityUserEvent : Swift.Int {
+  case user
+  case posts
+  case comments
+  case postsAndComments
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommentEvent : Swift.Int {
+  case comment
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFollowEvent : Swift.Int {
+  case myFollowers
+  case myFollowing
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct AmityCommunityMembershipFilterOption : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public static var none: AmitySDK.AmityCommunityMembershipFilterOption
+  public static var ban: AmitySDK.AmityCommunityMembershipFilterOption
+  public static var member: AmitySDK.AmityCommunityMembershipFilterOption
+  public typealias ArrayLiteralElement = AmitySDK.AmityCommunityMembershipFilterOption
+  public typealias Element = AmitySDK.AmityCommunityMembershipFilterOption
+  public typealias RawValue = Swift.Int
+}
+public enum AmityRoleFilterType : Swift.Int {
+  case only
+  case not
+  case all
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityNotificationModuleType : Swift.Int {
+  case chat
+  case videoStreaming
+  case social
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommunityNotificationEventType : Swift.Int {
+  case postCreated
+  case postReacted
+  case commentCreated
+  case commentReplied
+  case commentReacted
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFollowStatus : Swift.Int {
+  case none
+  case pending
+  case accepted
+  case blocked
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFollowQueryOption : Swift.Int {
+  case all
+  case pending
+  case accepted
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFollowActionType : Swift.Int {
+  case follow
+  case unfollow
+  case accept
+  case decline
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFetchPageType : Swift.Int {
+  case firstPage
+  case nextPage
+  case previousPage
+  case lastPage
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityChannelType : Swift.Int {
+  case standard
+  case `private`
+  case broadcast
+  case conversation
+  case live
+  case community
+  case unknown
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityMessageType : Swift.Int {
+  case text
+  case image
+  case file
+  case custom
+  case audio
+  case video
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityFileType : Swift.String {
+  case file
+  case image
+  case video
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum AmityMediaSize : Swift.Int {
+  case small
+  case medium
+  case large
+  case full
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public enum AmityCommentDataTypeFilter {
+  case any([AmitySDK.AmityCommentDataType])
+  case exact([AmitySDK.AmityCommentDataType])
+}
+public enum AmityCommentDataType : Swift.String {
+  case text
+  case image
+  case unknown
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class AmityRoleFilter {
+  public var filterType: AmitySDK.AmityRoleFilterType
+  public var roleIds: [Swift.String]?
+  public static func onlyFilter(withRoleIds roleIds: [Swift.String]) -> AmitySDK.AmityRoleFilter
+  public static func notFilter(withRoleIds roleIds: [Swift.String]) -> AmitySDK.AmityRoleFilter
+  public static func allFilter() -> AmitySDK.AmityRoleFilter
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCAnalyticsEventRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCCommentRealmModel : AmitySDK._ASCRealmModel {
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class AmityPostRepository {
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use dedicated APIs such as `createTextPost`, `createImagePost`, `createFilePost`, `createVideoPost`, `createPollPost` and `createLiveStreamPost` instead.")
+  public func createPost(_ builder: any AmitySDK.AmityPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, completion: AmitySDK.AmityPostRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use dedicated APIs such as `createTextPost`, `createImagePost`, `createFilePost`, `createVideoPost`, `createPollPost` and `createLiveStreamPost` instead.")
+  @_Concurrency.MainActor public func createPost(_ builder: any AmitySDK.AmityPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createTextPost(_ builder: AmitySDK.AmityTextPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createImagePost(_ builder: AmitySDK.AmityImagePostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createFilePost(_ builder: AmitySDK.AmityFilePostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createVideoPost(_ builder: AmitySDK.AmityVideoPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createPollPost(_ builder: AmitySDK.AmityPollPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createLiveStreamPost(_ builder: AmitySDK.AmityLiveStreamPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder?) async throws -> AmitySDK.AmityPost
+  #endif
+  @available(*, deprecated, message: "Use dedicated APIs such as `createTextPost`, `createImagePost`, `createFilePost`, `createVideoPost`, `createPollPost` and `createLiveStreamPost` instead.")
+  public func createPost(_ builder: any AmitySDK.AmityPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder, completion: AmitySDK.AmityPostRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use dedicated APIs such as `createTextPost`, `createImagePost`, `createFilePost`, `createVideoPost`, `createPollPost` and `createLiveStreamPost` instead.")
+  @_Concurrency.MainActor public func createPost(_ builder: any AmitySDK.AmityPostBuilder, targetId: Swift.String?, targetType: AmitySDK.AmityPostTargetType, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder) async throws -> AmitySDK.AmityPost
+  #endif
+  @available(*, deprecated, message: "Use `func editPost(postId:, builder:) async throws -> AmityPost` instead.")
+  public func updatePost(withId postId: Swift.String, builder: any AmitySDK.AmityPostBuilder, completion: AmitySDK.AmityPostRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editPost(withId postId: Swift.String, builder: any AmitySDK.AmityPostBuilder) async throws -> AmitySDK.AmityPost
+  #endif
+  @available(*, deprecated, message: "Use `func editPost(postId:, builder:, metadata:, mentionees:) async throws -> AmityPost` instead.")
+  public func updatePost(withId postId: Swift.String, builder: any AmitySDK.AmityPostBuilder, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder, completion: AmitySDK.AmityPostRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editPost(withId postId: Swift.String, builder: any AmitySDK.AmityPostBuilder, metadata: [Swift.String : Any]?, mentionees: AmitySDK.AmityMentioneesBuilder) async throws -> AmitySDK.AmityPost
+  #endif
+  @available(*, deprecated, message: "Use `func softDeletePost(postId:, parentId:) async throws -> Bool` to soft delete post and `func hardDeletePost(postId:, parentId:) async throws -> Bool` to hard delete post instead.")
+  public func deletePost(withId postId: Swift.String, parentId: Swift.String?, hardDelete: Swift.Bool, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func softDeletePost(withId postId: Swift.String, parentId: Swift.String?) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func hardDeletePost(withId postId: Swift.String, parentId: Swift.String?) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func approvePost(postId:) async throws -> Bool` instead.")
+  public func approvePost(withId postId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func approvePost(withId postId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @available(*, deprecated, message: "Use `func declinePost(postId:) async throws -> Bool` instead.")
+  public func declinePost(withId postId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func declinePost(withId postId: Swift.String) async throws -> Swift.Bool
+  #endif
+  public func getPost(withId postId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityPost>
+  public func getPosts(_ options: AmitySDK.AmityPostQueryOptions) -> AmitySDK.AmityCollection<AmitySDK.AmityPost>
+  public func getReactions(_ postId: Swift.String, reactionName: Swift.String?) -> AmitySDK.AmityCollection<AmitySDK.AmityReaction>
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func flagPost(withId postId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unflagPost(withId postId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isFlaggedByMe(withId postId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+public typealias AmityChannelNotificationSettingsCompletion = (AmitySDK.AmityChannelNotificationSettings?, (any Swift.Error)?) -> Swift.Void
+public class AmityChannelNotificationsManager {
+  required public init(client: AmitySDK.AmityClient, channelId: Swift.String)
+  public func enable(completion: AmitySDK.AmityRequestCompletion?)
+  public func disable(completion: AmitySDK.AmityRequestCompletion?)
+  public func getSettings(completion: @escaping AmitySDK.AmityChannelNotificationSettingsCompletion)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers final public class AmityCommunityChannelBuilder : AmitySDK.AmityDefaultChannelBuilder {
+  override public init()
+  final public func setIsChannelPublic(_ isPublic: Swift.Bool)
+  override final public func build() -> [Swift.String : Any]
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AmityMentionMapper {
+  public class func mentions(fromMetadata metadata: [Swift.String : Any]) -> [AmitySDK.AmityMention]
+  public class func metadata(from mentions: [AmitySDK.AmityMention]) -> [Swift.String : Any]
+  @objc deinit
+}
+public class AmityMessageRepository {
+  final public let client: AmitySDK.AmityClient
+  required public init(client: AmitySDK.AmityClient)
+  @available(*, deprecated, message: "Use `func softDeleteMessage(withId:) async throws -> Bool` instead.")
+  public func deleteMessage(withId messageId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func softDeleteMessage(withId:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func deleteMessage(withId messageId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func softDeleteMessage(withId messageId: Swift.String) async throws -> Swift.Bool
+  #endif
+  public func deleteFailedMessages(_ completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func softDeleteMessage(withId:) async throws -> Bool` instead.")
+  public func deleteFailedMessage(_ messageId: Swift.String, completion: AmitySDK.AmityRequestCompletion?)
+  @available(*, deprecated, message: "Use `func createCustomMessage(options:) async throws -> AmityMessage` instead.")
+  public func createCustomMessage(options: AmitySDK.AmityCustomMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createCustomMessage(options: AmitySDK.AmityCustomMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  @available(*, deprecated, message: "Use `func createTextMessage(options:) async throws -> AmityMessage` instead.")
+  public func createTextMessage(options: AmitySDK.AmityTextMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createTextMessage(options: AmitySDK.AmityTextMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  @available(*, deprecated, message: "Use `func createImageMessage(options:) async throws -> AmityMessage` instead.")
+  public func createImageMessage(options: AmitySDK.AmityImageMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createImageMessage(options: AmitySDK.AmityImageMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  @available(*, deprecated, message: "Use `func createAudioMessage(options:) async throws -> AmityMessage` instead.")
+  public func createAudioMessage(options: AmitySDK.AmityAudioMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createAudioMessage(options: AmitySDK.AmityAudioMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  @available(*, deprecated, message: "Use `func createFileMessage(options:) async throws -> AmityMessage` instead.")
+  public func createFileMessage(options: AmitySDK.AmityFileMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createFileMessage(options: AmitySDK.AmityFileMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  @available(*, deprecated, message: "Use `func createVideoMessage(options:) async throws -> AmityMessage` instead.")
+  public func createVideoMessage(options: AmitySDK.AmityVideoMessageCreateOptions, completion: AmitySDK.AmityMessageCreateCompletion? = nil)
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func createVideoMessage(options: AmitySDK.AmityVideoMessageCreateOptions) async throws -> AmitySDK.AmityMessage
+  #endif
+  public func getMessage(_ messageId: Swift.String) -> AmitySDK.AmityObject<AmitySDK.AmityMessage>
+  public func getMessages(options: AmitySDK.AmityMessageQueryOptions) -> AmitySDK.AmityCollection<AmitySDK.AmityMessage>
+  public func getReactions(_ messageId: Swift.String) -> AmitySDK.AmityCollection<AmitySDK.AmityReaction>
+  #if compiler(>=5.3) && $AsyncAwait
+  @available(*, deprecated, message: "Use `func editTextMessage(messageId:, text:, metadata:, mentionees:) async throws -> Bool` instead.")
+  @_Concurrency.MainActor public func editMessage(withId messageId: Swift.String, _ text: Swift.String, metadata: [Swift.String : Any]? = nil, mentionees: AmitySDK.AmityMentioneesBuilder? = nil) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editTextMessage(withId messageId: Swift.String, _ text: Swift.String, metadata: [Swift.String : Any]? = nil, mentionees: AmitySDK.AmityMentioneesBuilder? = nil) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func editCustomMessage(withId messageId: Swift.String, _ customMessage: [Swift.String : Any]) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func flagMessage(withId messageId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func unflagMessage(withId messageId: Swift.String) async throws -> Swift.Bool
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor public func isMessageFlaggedByMe(withId messageId: Swift.String) async throws -> Swift.Bool
+  #endif
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class _ASCSDKRealmModel : RealmSwift.Object {
+  @objc override dynamic public class func shouldIncludeInDefaultSchema() -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension AmitySDK.AmityMessageQuerySortOptions : Swift.Equatable {}
+extension AmitySDK.AmityMessageQuerySortOptions : Swift.Hashable {}
+extension AmitySDK.AmityRegion : Swift.Equatable {}
+extension AmitySDK.AmityRegion : Swift.Hashable {}
+extension AmitySDK.AmityRegion : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityMembershipSortOption : Swift.Equatable {}
+extension AmitySDK.AmityCommunityMembershipSortOption : Swift.Hashable {}
+extension AmitySDK.AmityCommunityMembershipSortOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityFollowQueryOption : Swift.Equatable {}
+extension AmitySDK.AmityFollowQueryOption : Swift.Hashable {}
+extension AmitySDK.AmityFollowQueryOption : Swift.RawRepresentable {}
+extension AmitySDK.MessageDeliveredMembershipFilter : Swift.Equatable {}
+extension AmitySDK.MessageDeliveredMembershipFilter : Swift.Hashable {}
+extension AmitySDK.MessageDeliveredMembershipFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityStreamStatus : Swift.Equatable {}
+extension AmitySDK.AmityStreamStatus : Swift.Hashable {}
+extension AmitySDK.AmityStreamStatus : Swift.RawRepresentable {}
+extension AmitySDK.AmityContentFeedType : Swift.Equatable {}
+extension AmitySDK.AmityContentFeedType : Swift.Hashable {}
+extension AmitySDK.AmityContentFeedType : Swift.RawRepresentable {}
+extension AmitySDK.AmitySortBy : Swift.Equatable {}
+extension AmitySDK.AmitySortBy : Swift.Hashable {}
+extension AmitySDK.AmitySortBy : Swift.RawRepresentable {}
+extension AmitySDK.SessionState : Swift.Sendable {}
+extension AmitySDK.AmityVideoTranscodingStatus : Swift.Equatable {}
+extension AmitySDK.AmityVideoTranscodingStatus : Swift.Hashable {}
+extension AmitySDK.AmityVideoTranscodingStatus : Swift.RawRepresentable {}
+extension AmitySDK.AmityVideoDataQuality : Swift.Equatable {}
+extension AmitySDK.AmityVideoDataQuality : Swift.Hashable {}
+extension AmitySDK.AmityVideoDataQuality : Swift.RawRepresentable {}
+extension AmitySDK.AmityVideoResolution : Swift.Hashable {}
+extension AmitySDK.AmityVideoResolution : Swift.RawRepresentable {}
+extension AmitySDK.ASCCustomCommandMethod : Swift.Equatable {}
+extension AmitySDK.ASCCustomCommandMethod : Swift.Hashable {}
+extension AmitySDK.AmityPostTargetType : Swift.Equatable {}
+extension AmitySDK.AmityPostTargetType : Swift.Hashable {}
+extension AmitySDK.AmityPostTargetType : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityPostSettings : Swift.Equatable {}
+extension AmitySDK.AmityCommunityPostSettings : Swift.Hashable {}
+extension AmitySDK.AmityCommunityPostSettings : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityCreateOptions : AmitySDK.AmityBuilder {}
+extension AmitySDK.AmityCommunityUpdateOptions : AmitySDK.AmityBuilder {}
+extension AmitySDK.AmityChannelType : Swift.Equatable {}
+extension AmitySDK.AmityChannelType : Swift.Hashable {}
+extension AmitySDK.AmityChannelType : Swift.RawRepresentable {}
+extension AmitySDK.AmityReactionReferenceType : Swift.Equatable {}
+extension AmitySDK.AmityReactionReferenceType : Swift.Hashable {}
+extension AmitySDK.AmityReactionReferenceType : Swift.RawRepresentable {}
+extension AmitySDK.AmityPollAnswerType : Swift.Equatable {}
+extension AmitySDK.AmityPollAnswerType : Swift.Hashable {}
+extension AmitySDK.AmityPollAnswerType : Swift.RawRepresentable {}
+extension AmitySDK.AmityPollCreateOptions : AmitySDK.AmityBuilder {}
+extension AmitySDK.AmityLiveVideoRecordingFileFormat : Swift.Equatable {}
+extension AmitySDK.AmityLiveVideoRecordingFileFormat : Swift.Hashable {}
+extension AmitySDK.AmityLiveVideoRecordingFileFormat : Swift.RawRepresentable {}
+extension AmitySDK.AmityChannelMembershipSearchFilter : Swift.Equatable {}
+extension AmitySDK.AmityChannelMembershipSearchFilter : Swift.Hashable {}
+extension AmitySDK.AmityChannelMembershipSearchFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityCategoriesSortOption : Swift.Equatable {}
+extension AmitySDK.AmityCommunityCategoriesSortOption : Swift.Hashable {}
+extension AmitySDK.AmityCommunityCategoriesSortOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityNotificationEventType : Swift.Equatable {}
+extension AmitySDK.AmityCommunityNotificationEventType : Swift.Hashable {}
+extension AmitySDK.AmityCommunityNotificationEventType : Swift.RawRepresentable {}
+extension AmitySDK.AmityUserSortOption : Swift.Equatable {}
+extension AmitySDK.AmityUserSortOption : Swift.Hashable {}
+extension AmitySDK.AmityUserSortOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityFollowActionType : Swift.Equatable {}
+extension AmitySDK.AmityFollowActionType : Swift.Hashable {}
+extension AmitySDK.AmityFollowActionType : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunitySortOption : Swift.Equatable {}
+extension AmitySDK.AmityCommunitySortOption : Swift.Hashable {}
+extension AmitySDK.AmityCommunitySortOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityQueryFilter : Swift.Equatable {}
+extension AmitySDK.AmityCommunityQueryFilter : Swift.Hashable {}
+extension AmitySDK.AmityCommunityQueryFilter : Swift.RawRepresentable {}
+extension AmitySDK.MessageReadMembershipFilter : Swift.Equatable {}
+extension AmitySDK.MessageReadMembershipFilter : Swift.Hashable {}
+extension AmitySDK.MessageReadMembershipFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityMembership.SearchFilter : Swift.Equatable {}
+extension AmitySDK.AmityCommunityMembership.SearchFilter : Swift.Hashable {}
+extension AmitySDK.AmityCommunityMembership.QueryFilter : Swift.Equatable {}
+extension AmitySDK.AmityCommunityMembership.QueryFilter : Swift.Hashable {}
+extension AmitySDK.AmityLogLevel : Swift.Equatable {}
+extension AmitySDK.AmityLogLevel : Swift.Hashable {}
+extension AmitySDK.AmityLogLevel : Swift.RawRepresentable {}
+extension AmitySDK.AmityPostQuerySortOption : Swift.Equatable {}
+extension AmitySDK.AmityPostQuerySortOption : Swift.Hashable {}
+extension AmitySDK.AmityPostQuerySortOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityFeedType : Swift.Equatable {}
+extension AmitySDK.AmityFeedType : Swift.Hashable {}
+extension AmitySDK.AmityFeedType : Swift.RawRepresentable {}
+extension AmitySDK.AmityChannelMembershipType : Swift.Equatable {}
+extension AmitySDK.AmityChannelMembershipType : Swift.Hashable {}
+extension AmitySDK.AmityChannelMembershipType : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityMembershipType : Swift.Equatable {}
+extension AmitySDK.AmityCommunityMembershipType : Swift.Hashable {}
+extension AmitySDK.AmityCommunityMembershipType : Swift.RawRepresentable {}
+extension AmitySDK.AmityNotificationModuleType : Swift.Equatable {}
+extension AmitySDK.AmityNotificationModuleType : Swift.Hashable {}
+extension AmitySDK.AmityNotificationModuleType : Swift.RawRepresentable {}
+extension AmitySDK.AmityChannelQueryFilter : Swift.Equatable {}
+extension AmitySDK.AmityChannelQueryFilter : Swift.Hashable {}
+extension AmitySDK.AmityChannelQueryFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityLoadingStatus : Swift.Equatable {}
+extension AmitySDK.AmityLoadingStatus : Swift.Hashable {}
+extension AmitySDK.AmityLoadingStatus : Swift.RawRepresentable {}
+extension AmitySDK.AmityDataStatus : Swift.Equatable {}
+extension AmitySDK.AmityDataStatus : Swift.Hashable {}
+extension AmitySDK.AmityDataStatus : Swift.RawRepresentable {}
+extension AmitySDK.AmityErrorCode : Swift.Equatable {}
+extension AmitySDK.AmityErrorCode : Swift.Hashable {}
+extension AmitySDK.AmityErrorCode : Swift.RawRepresentable {}
+extension AmitySDK.AmityReferenceType : Swift.Equatable {}
+extension AmitySDK.AmityReferenceType : Swift.Hashable {}
+extension AmitySDK.AmityReferenceType : Swift.RawRepresentable {}
+extension AmitySDK.AmityDataType : Swift.Equatable {}
+extension AmitySDK.AmityDataType : Swift.Hashable {}
+extension AmitySDK.AmityDataType : Swift.RawRepresentable {}
+extension AmitySDK.AmitySyncState : Swift.Equatable {}
+extension AmitySDK.AmitySyncState : Swift.Hashable {}
+extension AmitySDK.AmitySyncState : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityMembershipFilter : Swift.Equatable {}
+extension AmitySDK.AmityCommunityMembershipFilter : Swift.Hashable {}
+extension AmitySDK.AmityCommunityMembershipFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommentReferenceType : Swift.Equatable {}
+extension AmitySDK.AmityCommentReferenceType : Swift.Hashable {}
+extension AmitySDK.AmityCommentReferenceType : Swift.RawRepresentable {}
+extension AmitySDK.AmityQueryOption : Swift.Equatable {}
+extension AmitySDK.AmityQueryOption : Swift.Hashable {}
+extension AmitySDK.AmityQueryOption : Swift.RawRepresentable {}
+extension AmitySDK.AmityOrderBy : Swift.Equatable {}
+extension AmitySDK.AmityOrderBy : Swift.Hashable {}
+extension AmitySDK.AmityOrderBy : Swift.RawRepresentable {}
+@available(*, deprecated, message: "SDK does not use this enum, and it will be deleted in the future.")
+extension AmitySDK.AmityCommunityType : Swift.Equatable {}
+@available(*, deprecated, message: "SDK does not use this enum, and it will be deleted in the future.")
+extension AmitySDK.AmityCommunityType : Swift.Hashable {}
+@available(*, deprecated, message: "SDK does not use this enum, and it will be deleted in the future.")
+extension AmitySDK.AmityCommunityType : Swift.RawRepresentable {}
+extension AmitySDK.AmityPermission : Swift.Equatable {}
+extension AmitySDK.AmityPermission : Swift.Hashable {}
+extension AmitySDK.AmityPermission : Swift.RawRepresentable {}
+extension AmitySDK.AmityChannelMembershipFilter : Swift.Equatable {}
+extension AmitySDK.AmityChannelMembershipFilter : Swift.Hashable {}
+extension AmitySDK.AmityChannelMembershipFilter : Swift.RawRepresentable {}
+extension AmitySDK.AmityMessageMentionType : Swift.Equatable {}
+extension AmitySDK.AmityMessageMentionType : Swift.Hashable {}
+extension AmitySDK.AmityMessageMentionType : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommunityEvent : Swift.Equatable {}
+extension AmitySDK.AmityCommunityEvent : Swift.Hashable {}
+extension AmitySDK.AmityCommunityEvent : Swift.RawRepresentable {}
+extension AmitySDK.AmityPostEvent : Swift.Equatable {}
+extension AmitySDK.AmityPostEvent : Swift.Hashable {}
+extension AmitySDK.AmityPostEvent : Swift.RawRepresentable {}
+extension AmitySDK.AmityUserEvent : Swift.Equatable {}
+extension AmitySDK.AmityUserEvent : Swift.Hashable {}
+extension AmitySDK.AmityUserEvent : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommentEvent : Swift.Equatable {}
+extension AmitySDK.AmityCommentEvent : Swift.Hashable {}
+extension AmitySDK.AmityCommentEvent : Swift.RawRepresentable {}
+extension AmitySDK.AmityFollowEvent : Swift.Equatable {}
+extension AmitySDK.AmityFollowEvent : Swift.Hashable {}
+extension AmitySDK.AmityFollowEvent : Swift.RawRepresentable {}
+extension AmitySDK.AmityRoleFilterType : Swift.Equatable {}
+extension AmitySDK.AmityRoleFilterType : Swift.Hashable {}
+extension AmitySDK.AmityRoleFilterType : Swift.RawRepresentable {}
+extension AmitySDK.AmityFollowStatus : Swift.Equatable {}
+extension AmitySDK.AmityFollowStatus : Swift.Hashable {}
+extension AmitySDK.AmityFollowStatus : Swift.RawRepresentable {}
+extension AmitySDK.AmityFetchPageType : Swift.Equatable {}
+extension AmitySDK.AmityFetchPageType : Swift.Hashable {}
+extension AmitySDK.AmityFetchPageType : Swift.RawRepresentable {}
+extension AmitySDK.AmityMessageType : Swift.Equatable {}
+extension AmitySDK.AmityMessageType : Swift.Hashable {}
+extension AmitySDK.AmityMessageType : Swift.RawRepresentable {}
+extension AmitySDK.AmityFileType : Swift.Equatable {}
+extension AmitySDK.AmityFileType : Swift.Hashable {}
+extension AmitySDK.AmityFileType : Swift.RawRepresentable {}
+extension AmitySDK.AmityMediaSize : Swift.Equatable {}
+extension AmitySDK.AmityMediaSize : Swift.Hashable {}
+extension AmitySDK.AmityMediaSize : Swift.RawRepresentable {}
+extension AmitySDK.AmityCommentDataType : Swift.Equatable {}
+extension AmitySDK.AmityCommentDataType : Swift.Hashable {}
+extension AmitySDK.AmityCommentDataType : Swift.RawRepresentable {}
